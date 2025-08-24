@@ -1,182 +1,252 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chat Interface</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Google Icons -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <script>
-        // To prevent flash of light mode, this script is in the head
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.add('dark')
-        } else {
-          document.documentElement.classList.remove('dark')
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        /* Simple scrollbar styling */
-        #chat-container::-webkit-scrollbar, #history-container::-webkit-scrollbar {
-            width: 6px;
-        }
-        #chat-container::-webkit-scrollbar-track, #history-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        .dark #chat-container::-webkit-scrollbar-track, .dark #history-container::-webkit-scrollbar-track {
-            background: #2d3748;
-        }
-        #chat-container::-webkit-scrollbar-thumb, #history-container::-webkit-scrollbar-thumb {
-            background: #a8a8a8;
-            border-radius: 3px;
-        }
-        .dark #chat-container::-webkit-scrollbar-thumb, .dark #history-container::-webkit-scrollbar-thumb {
-            background: #4a5568;
-        }
-        #chat-container::-webkit-scrollbar-thumb:hover, #history-container::-webkit-scrollbar-thumb:hover {
-            background: #888;
-        }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        /* Animation for word fade-in */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(3px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .word-fade-in {
-            display: inline-block;
-            animation: fadeIn 0.3s ease forwards;
-            opacity: 0;
-        }
-        /* Styling for the thinking process panel */
-        .thinking-panel {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
-            padding: 0 1rem;
-        }
-        .thinking-panel.show {
-            max-height: 200px; /* Adjust as needed */
-            padding: 0.75rem 1rem;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Chat Interface · MicrWin 1</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Google Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+  <script>
+    // Prevent light-mode flash
+    if (
+      localStorage.getItem("theme") === "dark" ||
+      (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  </script>
+
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+
+    /* Smooth hover motion */
+    .tap {
+      transition: transform .12s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease;
+    }
+    .tap:active { transform: scale(.98); }
+
+    /* Custom scrollbars for chat + history */
+    #chat-container::-webkit-scrollbar,
+    #history-container::-webkit-scrollbar { width: 8px; }
+    #chat-container::-webkit-scrollbar-thumb,
+    #history-container::-webkit-scrollbar-thumb {
+      background: #bfc3ca;
+      border-radius: 8px;
+    }
+    .dark #chat-container::-webkit-scrollbar-thumb,
+    .dark #history-container::-webkit-scrollbar-thumb { background: #475569; }
+
+    /* Word fade-in */
+    @keyframes fadeIn { from {opacity:0; transform:translateY(3px)} to {opacity:1; transform:translateY(0)} }
+    .word-fade-in { display:inline-block; animation:fadeIn .3s ease forwards; opacity:0; }
+
+    /* Thinking panel expand */
+    .thinking-panel { max-height:0; overflow:hidden; transition:max-height .4s ease, padding .3s ease; padding:0 1rem; }
+    .thinking-panel.show { max-height:220px; padding:.75rem 1rem; }
+
+    /* Utility shadows (consistent look across light/dark) */
+    .elev-1 { box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 1px 1px rgba(0,0,0,.04); }
+    .elev-2 { box-shadow: 0 4px 14px rgba(0,0,0,.08); }
+    .elev-3 { box-shadow: 0 10px 30px rgba(0,0,0,.12); }
+
+    /* Glass card */
+    .glass {
+      background: rgba(255,255,255,.65);
+      backdrop-filter: saturate(140%) blur(8px);
+    }
+    .dark .glass {
+      background: rgba(17,24,39,.55);
+      backdrop-filter: saturate(140%) blur(10px);
+    }
+
+    /* Chat bubbles */
+    .bubble {
+      max-width: 72ch;
+      border-radius: 1rem;
+      padding: .75rem 1rem;
+      line-height: 1.6;
+    }
+    .bubble-user {
+      background: #2563eb; color: #fff;
+    }
+    .dark .bubble-user { background: #1d4ed8; }
+    .bubble-assistant {
+      background: #ffffff; border: 1px solid rgba(15,23,42,.08);
+    }
+    .dark .bubble-assistant { background: #0b1220; border-color: rgba(148,163,184,.18); }
+
+    /* Inputs */
+    .field {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+    }
+    .dark .field {
+      background: #0b1220;
+      border: 1px solid #1f2937;
+    }
+    .field:focus { outline: none; box-shadow: 0 0 0 3px rgba(37,99,235,.35); }
+
+    /* Focus ring for a11y */
+    .focus-ring:focus-visible {
+      outline: 2px solid transparent;
+      box-shadow: 0 0 0 3px rgba(59,130,246,.55);
+    }
+
+    /* Section titles */
+    .section-title {
+      letter-spacing: .02em;
+    }
+  </style>
 </head>
-<body class="bg-gray-200 dark:bg-gray-900 text-gray-800 dark:text-gray-200 h-screen">
 
-    <div class="flex w-full h-full bg-white dark:bg-gray-800 overflow-hidden">
-        <!-- Sidebar for History & Settings -->
-        <aside class="w-72 bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex-col hidden md:flex">
-            <!-- New Chat Button -->
-            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-                <button class="w-full flex items-center justify-center space-x-2 bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition-colors">
-                    <span class="material-symbols-outlined">add</span>
-                    <span>New Chat</span>
-                </button>
+<body class="bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 text-slate-800 dark:text-slate-200 min-h-screen">
+
+  <div class="flex w-full min-h-screen">
+    <!-- Sidebar -->
+    <aside class="hidden md:flex w-76 max-w-80 flex-col border-r border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/50 glass">
+      <!-- New Chat -->
+      <div class="p-4 border-b border-slate-200/70 dark:border-slate-800/70">
+        <button class="tap w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl elev-1 focus-ring" aria-label="Start new chat">
+          <span class="material-symbols-outlined">add</span>
+          <span class="font-semibold">New Chat</span>
+        </button>
+      </div>
+
+      <!-- History -->
+      <div class="px-4 pt-4">
+        <h2 class="section-title text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">History</h2>
+      </div>
+      <div id="history-container" class="flex-1 px-3 py-2 overflow-y-auto">
+        <!-- JS can replace -->
+      </div>
+
+      <!-- Settings -->
+      <div class="p-3 border-t border-slate-200/70 dark:border-slate-800/70">
+        <button id="settings-btn" class="tap w-full flex items-center justify-between text-slate-700 dark:text-slate-200 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 focus-ring" aria-expanded="false" aria-controls="settings-menu">
+          <span class="flex items-center gap-2">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="font-medium">Settings</span>
+          </span>
+          <span class="material-symbols-outlined">expand_more</span>
+        </button>
+
+        <div id="settings-menu" class="hidden mt-2 space-y-2" role="region" aria-label="Settings">
+          <button id="dark-mode-toggle" class="tap w-full flex items-center justify-between text-slate-700 dark:text-slate-200 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 focus-ring" aria-label="Toggle theme">
+            <span>Theme</span>
+            <div class="flex items-center gap-1">
+              <span id="sun-icon" class="material-symbols-outlined">light_mode</span>
+              <span id="moon-icon" class="material-symbols-outlined hidden">dark_mode</span>
             </div>
-            <div class="p-4">
-                <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300">History</h2>
+          </button>
+          <button id="clear-history-btn" class="tap w-full text-left text-slate-700 dark:text-slate-200 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 focus-ring">Clear History</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 flex flex-col">
+      <!-- Header -->
+      <header class="relative bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 text-white px-4 sm:px-6 py-3 flex items-center justify-between elev-2 border-b border-white/10 dark:border-slate-700/60">
+        <div class="flex items-center gap-2">
+          <button id="menu-btn" class="md:hidden tap p-2 rounded-full hover:bg-white/10 focus-ring" aria-label="Open menu">
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+
+          <!-- Model selector -->
+          <div class="relative group">
+            <button class="tap flex items-center gap-2 bg-white/10 hover:bg-white/15 dark:bg-slate-700/60 dark:hover:bg-slate-700/80 rounded-full text-base font-semibold pl-4 pr-3 py-1.5 focus-ring" aria-haspopup="menu" aria-expanded="false">
+              <span id="selected-model-name">MicrWin 1</span>
+              <span class="material-symbols-outlined transition-transform duration-200 group-focus-within:rotate-180">expand_more</span>
+            </button>
+            <div class="absolute top-full mt-2 w-56 bg-white dark:bg-slate-800 rounded-xl elev-3 py-1 hidden group-focus-within:block">
+              <a href="#" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">MicrWin 1</a>
+              <span class="block px-4 py-2 text-sm text-slate-400 dark:text-slate-500">Other Model (soon)</span>
             </div>
-            <div id="history-container" class="flex-1 px-2 overflow-y-auto">
-                <!-- Conversation history items will be appended here -->
-                <div class="p-3 text-sm text-gray-500 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer mb-1">COVID-19 Symptoms</div>
-                <div class="p-3 text-sm text-gray-500 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer mb-1">PS6 Release Date</div>
-                <div class="p-3 text-sm text-gray-500 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer mb-1">Flu Treatment Options</div>
+          </div>
+        </div>
+
+        <div class="hidden sm:flex items-center gap-3 text-xs text-white/80">
+          <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white/10">Beta</span>
+        </div>
+      </header>
+
+      <!-- Chat -->
+      <section id="chat-container" class="flex-1 space-y-4 px-4 sm:px-6 py-6 overflow-y-auto bg-slate-50/60 dark:bg-slate-900/40">
+        <!-- Welcome screen (hidden once chat starts) -->
+        <div id="welcome-screen" class="flex flex-col items-center justify-center h-[68vh] text-center">
+          <div class="flex items-center justify-center font-bold text-4xl text-white mb-5">
+            <img src="./Logo/Logo.png" alt="MicrWin logo" class="w-[140px] h-auto select-none" draggable="false" />
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-white mb-2">How can I help you today?</h1>
+          <p class="text-slate-600 dark:text-slate-400 mb-8 max-w-prose">Ask me anything, or try one of the suggestions below.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-3xl">
+            <button class="tap bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl text-left hover:shadow-md focus-ring">
+              <h3 class="font-semibold mb-1 text-slate-800 dark:text-slate-100">Compare Flu and COVID</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400">What are the main differences in their symptoms?</p>
+            </button>
+            <button class="tap bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl text-left hover:shadow-md focus-ring">
+              <h3 class="font-semibold mb-1 text-slate-800 dark:text-slate-100">Explain Lung Cancer</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400">What are the primary causes?</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- Example message styles (JS can append similar) -->
+        <!--
+        <div class="flex justify-start">
+          <div class="bubble bubble-assistant elev-1">Hello! How can I assist you?</div>
+        </div>
+        <div class="flex justify-end">
+          <div class="bubble bubble-user elev-1">Tell me about…</div>
+        </div>
+        -->
+      </section>
+
+      <!-- Composer -->
+      <footer class="px-4 sm:px-6 py-4 border-t border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/60 glass">
+        <div class="flex items-end gap-3 max-w-5xl mx-auto">
+          <!-- File input -->
+          <label for="file-upload" class="cursor-pointer tap focus-ring rounded-full" title="Attach a JSON file">
+            <div class="p-3 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 elev-1">
+              <span class="material-symbols-outlined text-slate-600 dark:text-slate-300">attachment</span>
             </div>
-            <!-- Settings Area -->
-            <div class="p-2 border-t border-gray-200 dark:border-gray-700">
-                 <button id="settings-btn" class="w-full flex items-center space-x-2 text-gray-600 dark:text-gray-300 p-3 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-gray-700">
-                    <span class="material-symbols-outlined">settings</span>
-                    <span>Settings</span>
-                </button>
-                <div id="settings-menu" class="hidden mt-2 space-y-2">
-                    <button id="dark-mode-toggle" class="w-full flex items-center justify-between text-gray-600 dark:text-gray-300 p-3 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-gray-700">
-                        <span>Theme</span>
-                        <div class="flex items-center">
-                            <span id="sun-icon" class="material-symbols-outlined">light_mode</span>
-                            <span id="moon-icon" class="material-symbols-outlined hidden">dark_mode</span>
-                        </div>
-                    </button>
-                    <button id="clear-history-btn" class="w-full text-left text-gray-600 dark:text-gray-300 p-3 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-gray-700">Clear History</button>
-                </div>
-            </div>
-        </aside>
+            <input id="file-upload" type="file" class="hidden" accept=".json" />
+          </label>
 
-        <!-- Main Chat Area -->
-        <main class="flex flex-col flex-1">
-            <!-- Header -->
-            <header class="bg-blue-600 dark:bg-gray-800 text-white p-4 flex items-center justify-between shadow-md z-10 border-b border-blue-700 dark:border-gray-700">
-                <div class="flex items-center space-x-3">
-                     <button id="menu-btn" class="p-2 rounded-full hover:bg-blue-700 dark:hover:bg-gray-700 md:hidden">
-                        <span class="material-symbols-outlined">menu</span>
-                     </button>
-                     <!-- Custom Model Selector -->
-                     <div class="relative group">
-                        <button class="flex items-center space-x-2 bg-blue-700 dark:bg-gray-700 rounded-full font-bold text-lg pl-4 pr-3 py-1 focus:outline-none">
-                            <span id="selected-model-name">MicrWin 1</span>
-                            <span class="material-symbols-outlined transition-transform duration-200 group-focus-within:rotate-180">expand_more</span>
-                        </button>
-                        <!-- Dropdown Menu -->
-                        <div class="absolute top-full mt-2 w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg py-1 hidden group-focus-within:block">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">MicrWin 1</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-400 dark:text-gray-500 cursor-not-allowed">Other Model (soon)</a>
-                        </div>
-                     </div>
-                </div>
-            </header>
+          <!-- Field -->
+          <div class="flex-1">
+            <input
+              id="user-input"
+              type="text"
+              placeholder="Type your message…"
+              class="field w-full p-3 rounded-xl focus-ring text-slate-800 dark:text-slate-100 placeholder:text-slate-400"
+              autocomplete="off"
+              aria-label="Type your message"
+            />
+          </div>
 
-            <!-- Chat Messages Container -->
-            <div id="chat-container" class="flex-1 p-6 overflow-y-auto bg-gray-100 dark:bg-gray-800">
-                <!-- Welcome Screen (will be hidden by JS once chat starts) -->
-                <div id="welcome-screen" class="flex flex-col items-center justify-center h-full text-center">
-                    <div class="flex items-center justify-center font-bold text-4xl text-white mb-4">
-                        <img src="./Logo/Logo.png" alt="" style="width: 140px;">
-                    </div>
-                    <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">How can I help you today?</h1>
-                    <p class="text-gray-500 dark:text-gray-400 mb-8">Ask me anything, or try one of the suggestions below.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
-                        <div class="bg-white dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer">
-                            <h3 class="font-semibold mb-1 text-gray-700 dark:text-gray-200">Compare Flu and COVID</h3>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">What are the main differences in their symptoms?</p>
-                        </div>
-                        <div class="bg-white dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer">
-                            <h3 class="font-semibold mb-1 text-gray-700 dark:text-gray-200">Explain Lung Cancer</h3>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">What are the primary causes?</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Messages will be appended here -->
-            </div>
+          <!-- Send -->
+          <button id="send-btn" class="tap bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl elev-1 focus-ring" aria-label="Send message">
+            <span class="material-symbols-outlined">send</span>
+          </button>
+        </div>
+      </footer>
+    </main>
+  </div>
 
-            <!-- Input Area -->
-            <footer class="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-                <div class="flex items-center space-x-3">
-                    <!-- File Import Button -->
-                    <label for="file-upload" class="cursor-pointer">
-                        <div class="p-3 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                            <span class="material-symbols-outlined text-gray-600 dark:text-gray-400">attachment</span>
-                        </div>
-                        <input id="file-upload" type="file" class="hidden" accept=".json">
-                    </label>
-
-                    <!-- Text Input -->
-                    <input type="text" id="user-input" placeholder="Type your message..." class="flex-1 p-3 border border-gray-300 dark:border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow bg-gray-50 dark:bg-gray-800 dark:text-white">
-
-                    <!-- Send Button -->
-                    <button id="send-btn" class="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-transform transform active:scale-95">
-                        <span class="material-symbols-outlined">send</span>
-                    </button>
-                </div>
-            </footer>
-        </main>
-    </div>
-
-    <!-- Import the AI Model and the main script -->
-    <script type="module" src="./script.js"></script>
-
+  <!-- Main script (kept) -->
+  <script type="module" src="./script.js"></script>
 </body>
 </html>
