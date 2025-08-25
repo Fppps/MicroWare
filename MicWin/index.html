@@ -3,135 +3,230 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MicWin Chat</title>
+  <title>MicWin • Chat</title>
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Inter font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+  <!-- Material Symbols -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1" />
 
-  <!-- Highlight.js -->
+  <!-- Highlight.js (matching script.js usage) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script>window.hljs && hljs.configure({languages: ['javascript','html','css','xml','json','bash','typescript','plaintext']});</script>
 
   <style>
-    body { font-family: 'Inter', sans-serif; }
-    /* MicWin 1.5 gradient */
-    body.micwin15-bg {
-      background: linear-gradient(135deg, #1e3a8a, #9333ea, #f59e0b);
-      background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
-    }
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    body.typing-bg { background: #fff !important; animation: none !important; }
+    :root { --ring: #3b82f6; --card: rgba(255,255,255,.9); --border: rgba(15,23,42,.06); }
+    html { color-scheme: light dark; }
+    body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
 
-    /* App shells */
-    .app-shell { max-width: 1100px; margin: 0 auto; width: 100%; }
-    .surface { background: rgba(255,255,255,0.9); backdrop-filter: blur(8px); border: 1px solid rgba(15,23,42,0.06); }
-    .dark .surface { background: rgba(2,6,23,0.7); border-color: rgba(148,163,184,0.15); }
+    /* Polished app surface */
+    .surface { background: var(--card); border: 1px solid var(--border); backdrop-filter: blur(8px); }
+    .dark .surface { background: rgba(2, 6, 23, 0.7); border-color: rgba(148, 163, 184, 0.15); }
 
-    /* Fade-in for code cards and text inside */
-    .fade-in-up { opacity: 0; transform: translateY(6px); animation: fadeInUp .38s ease forwards; }
-    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+    /* Gradient **container** for MicWin 2‑Lite (not on body) */
+    .twolite-gradient { background: linear-gradient(135deg, #0ea5e9, #8b5cf6, #22c55e); background-size: 400% 400%; animation: gradientShift 18s ease infinite; }
+    @keyframes gradientShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+    /* While typing within 2‑Lite, flip the container to white */
+    #twolite-hero.typing { background: #ffffff !important; color: #0f172a !important; animation: none !important; }
 
-    /* Code column grid container (script.js applies this class) */
-    .code-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-    @media (min-width: 700px) { .code-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-    @media (min-width: 1100px){ .code-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    /* Quick hover polish */
+    .toolbar-btn { transition: transform .12s ease, opacity .12s ease; }
+    .toolbar-btn:hover { transform: translateY(-1px); opacity: .92; }
 
-    /* Code card look */
-    .code-card { border-radius: 14px; border: 1px solid rgba(15,23,42,.08); background: #fff; overflow: hidden; }
-    .dark .code-card { background: rgba(2,6,23,.7); border-color: rgba(148,163,184,.15); }
-    .code-card header { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-bottom:1px solid rgba(15,23,42,.06); }
-    .dark .code-card header { border-color: rgba(148,163,184,.15); }
-    .code-card pre { margin:0; padding:12px 14px; overflow:auto; max-height: 560px; }
-    .copy-btn { display:inline-flex; align-items:center; gap:6px; font-size:12px; padding:6px 10px; border-radius:8px; border:1px solid rgba(15,23,42,.12); background:#f8fafc; }
-    .copy-btn:hover { background:#eef2ff; }
-    .dark .copy-btn { background:#0b1220; border-color: rgba(148,163,184,.25); }
+    /* Sidebar drawer transitions (mobile) */
+    #sidebar { transition: transform .2s ease; }
+    #sidebar-backdrop { transition: opacity .2s ease; }
+
+    /* Small elevation for cards */
+    .elevate { box-shadow: 0 8px 30px rgba(2, 6, 23, 0.08); }
+    .dark .elevate { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35); }
+
+    /* Subtle separators in header */
+    .hairline { height: 1px; background: rgba(15,23,42,.08); }
+    .dark .hairline { background: rgba(148,163,184,.15); }
+
+    /* Chat area min-height */
+    #chat-container { min-height: 60vh; }
+
+    /* Improve input ring */
+    .focus-ring:focus { outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,.35); }
+
+    /* Hide scrollbars on modern UIs (optional) */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 
-<body class="bg-gray-50 text-slate-800 min-h-screen flex">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex">
+  <!-- Mobile overlay for drawer -->
+  <div id="sidebar-backdrop" class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none md:hidden z-30"></div>
 
   <!-- Sidebar -->
-  <aside class="hidden md:block w-72 border-r border-slate-200 bg-white">
-    <div class="p-4 border-b border-slate-200">
-      <button class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl">
-        <span class="material-symbols-outlined">add</span>
-        <span class="font-semibold">New Chat</span>
+  <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-80 md:w-72 translate-x-[-100%] md:translate-x-0 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col">
+    <!-- Brand -->
+    <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="./Logo/Logo.png" alt="MicWin Logo" class="w-9 h-9 rounded" />
+        <div class="flex flex-col">
+          <span class="text-sm font-bold">MicWin</span>
+          <span class="text-xs text-slate-500 dark:text-slate-400">Your multi-model workspace</span>
+        </div>
+      </div>
+      <button id="menu-btn" class="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-800 toolbar-btn">
+        <span class="material-symbols-outlined">close</span>
       </button>
     </div>
-    <div class="px-4 pt-4">
-      <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">History</h2>
+
+    <!-- Controls -->
+    <div class="p-3 flex items-center gap-2">
+      <button id="settings-btn" class="flex-1 surface rounded-xl px-3 py-2 text-sm hover:bg-white/70 dark:hover:bg-slate-800/70 elevate toolbar-btn">
+        <span class="material-symbols-outlined align-[-3px] mr-1">tune</span>
+        Settings
+      </button>
+      <button id="dark-mode-toggle" class="w-10 h-10 surface rounded-xl grid place-items-center elevate toolbar-btn" title="Toggle theme">
+        <span id="sun-icon" class="material-symbols-outlined">light_mode</span>
+        <span id="moon-icon" class="material-symbols-outlined hidden">dark_mode</span>
+      </button>
     </div>
-    <div id="history-container" class="flex-1 px-3 py-2 overflow-y-auto">
-      <div class="p-3 text-sm text-gray-400 text-center">No history yet.</div>
+
+    <!-- Settings dropdown -->
+    <div id="settings-menu" class="hidden mx-3 mb-2 surface rounded-xl p-3 text-sm elevate">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="font-semibold">Session</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400">Clear conversation history</div>
+        </div>
+        <button id="clear-history-btn" class="px-3 py-1.5 rounded-lg bg-slate-900 text-white dark:bg-slate-700 hover:opacity-90">Clear History</button>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="px-4 pt-3">
+      <h2 class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">History</h2>
+    </div>
+    <div id="history-container" class="flex-1 px-3 py-2 overflow-y-auto no-scrollbar">
+      <div class="p-3 text-sm text-gray-400 dark:text-gray-500 text-center">No history yet.</div>
+    </div>
+
+    <div class="p-3 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400">
+      v1 • Keeping it simple<br/>
+      v1.5 • Reasoning & code<br/>
+      2‑Lite • Expanded knowledge & strategies
     </div>
   </aside>
 
-  <!-- Main -->
-  <div class="flex-1 flex flex-col">
-    <!-- Header -->
-    <header class="flex items-center justify-center px-4 sm:px-6 py-3 relative z-40">
-      <div class="app-shell w-full">
-        <div class="surface rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between shadow-sm">
-          <div class="flex items-center gap-3">
-            <img src="./Logo/Logo.png" alt="MicWin Logo" class="w-9 h-9 rounded" />
-            <h1 id="header-title" class="text-lg font-bold">MicWin 1</h1>
-          </div>
-          <div class="relative group">
-            <button class="flex items-center gap-2 bg-blue-600/10 hover:bg-blue-600/20 px-4 py-1.5 rounded-full text-sm font-medium">
-              <span id="selected-model-name">MicWin 1</span>
-              <span class="material-symbols-outlined">expand_more</span>
+  <!-- Main column -->
+  <div class="flex-1 flex flex-col min-w-0">
+    <!-- Top bar -->
+    <header class="sticky top-0 z-20 backdrop-blur supports-[backdrop-filter]:bg-white/70 bg-white dark:bg-slate-900 dark:supports-[backdrop-filter]:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800">
+      <div class="max-w-6xl mx-auto px-3 sm:px-5 py-2">
+        <div class="flex items-center justify-between gap-3">
+          <!-- Left: mobile menu + title -->
+          <div class="flex items-center gap-2">
+            <button id="menu-btn" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 toolbar-btn" title="Open sidebar">
+              <span class="material-symbols-outlined">menu</span>
             </button>
-            <div class="menu-card absolute right-0 mt-2 w-48 bg-white rounded-lg hidden group-focus-within:block z-50">
-              <a href="#" data-model="MicWin 1" class="block px-4 py-2 text-sm hover:bg-slate-100 rounded-t-lg">MicWin 1</a>
-              <a href="#" data-model="MicWin 1.5" class="block px-4 py-2 text-sm hover:bg-slate-100 rounded-b-lg">MicWin 1.5</a>
+            <div class="surface rounded-xl px-3 py-1.5 flex items-center gap-2 elevate">
+              <img src="./Logo/Logo.png" alt="" class="w-7 h-7 rounded">
+              <div class="text-sm">
+                <div id="header-title" class="font-semibold leading-5">MicWin 1</div>
+                <div class="text-[11px] text-slate-500 dark:text-slate-400 leading-4">Conversational AI workspace</div>
+              </div>
             </div>
+          </div>
+
+          <!-- Center: model switcher -->
+          <div class="relative">
+            <button class="surface rounded-full px-4 py-2 text-sm font-medium flex items-center gap-2 hover:bg-white/70 dark:hover:bg-slate-800/70 elevate">
+              <span id="selected-model-name">MicWin 1</span>
+              <span class="material-symbols-outlined text-base">expand_more</span>
+            </button>
+            <!-- Menu -->
+            <div class="absolute right-0 mt-2 w-56 surface rounded-xl p-1 shadow-xl hidden group-focus-within:block" id="model-menu">
+              <a href="#" data-model="MicWin 1" class="block px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">MicWin 1</a>
+              <a href="#" data-model="MicWin 1.5" class="block px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">MicWin 1.5</a>
+            </div>
+          </div>
+
+          <!-- Right: quick actions -->
+          <div class="flex items-center gap-2">
+            <label for="file-upload" class="cursor-pointer">
+              <div class="w-10 h-10 surface rounded-xl grid place-items-center toolbar-btn elevate" title="Import JSON knowledge">
+                <span class="material-symbols-outlined">attach_file</span>
+              </div>
+              <input id="file-upload" type="file" class="hidden" accept=".json" />
+            </label>
           </div>
         </div>
       </div>
+      <div class="hairline w-full"></div>
     </header>
 
-    <!-- Chat -->
-    <main class="flex-1 overflow-y-auto px-4 sm:px-6 pb-4">
-      <div class="app-shell">
-        <div class="surface rounded-2xl p-3 sm:p-4 md:p-6 shadow-sm">
-          <div id="chat-container" class="relative min-h-[60vh] px-1 sm:px-2 space-y-4">
-            <!-- Welcome -->
+    <!-- Content -->
+    <main class="flex-1 overflow-y-auto px-3 sm:px-5 pb-5">
+      <div class="max-w-6xl mx-auto">
+
+        <!-- MicWin 2‑Lite gradient WELCOME container (hidden by default; shown when 2‑Lite is active) -->
+        <section id="twolite-hero" class="hidden twolite-gradient text-white rounded-2xl p-6 sm:p-8 mb-4 elevate">
+          <div class="flex items-start gap-4">
+            <img src="./Logo/Logo.png" class="w-12 h-12 rounded-lg shadow" alt="MicWin logo"/>
+            <div>
+              <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Welcome to MicWin 2‑Lite</h2>
+              <p class="mt-1 text-white/90 max-w-3xl">Expanded knowledge in astrophysics, health (general info), social media, and games. Multiple thinking strategies, professional responses, and built‑in video link testing. Type to focus — the background turns white while you write.</p>
+              <ul class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                <li class="flex items-center gap-2"><span class="material-symbols-outlined text-base">auto_awesome</span><span>Strategies: fast, deliberate, planner‑coder, compare, socratic, critic</span></li>
+                <li class="flex items-center gap-2"><span class="material-symbols-outlined text-base">code</span><span>Generate multi‑layer code (HTML, CSS/Tailwind, JS, Node)</span></li>
+                <li class="flex items-center gap-2"><span class="material-symbols-outlined text-base">psychology</span><span>Show complex thinking with a structured trace</span></li>
+                <li class="flex items-center gap-2"><span class="material-symbols-outlined text-base">smart_display</span><span>Video link testing: quick heuristics & snippets</span></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Chat surface -->
+        <div class="surface elevate rounded-2xl p-3 sm:p-5">
+          <div id="chat-container" class="relative px-1 sm:px-2 space-y-4">
+            <!-- Welcome (kept for script.js) -->
             <div id="welcome-screen" class="relative flex flex-col items-center justify-center h-[60vh] text-center">
-              <img src="./Logo/Logo.png" alt="MicWin logo" class="w-[120px] h-auto mb-6" />
-              <h1 class="text-3xl sm:text-4xl font-bold mb-2">How can I help you today?</h1>
-              <p class="text-slate-600 mb-8">Ask me anything, or try a quick suggestion.</p>
-              <div id="suggestions-micwin1" class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
-                <button class="quick-reply-btn bg-white border border-slate-200 p-4 rounded-xl shadow hover:shadow-md text-left">
+              <img src="./Logo/Logo.png" alt="MicWin logo" class="w-[120px] h-auto mb-6 rounded-xl shadow-sm" />
+              <h1 id="welcome-title" class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2">How can I help you today?</h1>
+              <p id="welcome-subtitle" class="text-slate-600 dark:text-slate-400 mb-8">Ask me anything, or try a quick suggestion.</p>
+
+              <!-- Suggestions: MicWin 1 (basic) -->
+              <div id="suggestions-micwin1" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full max-w-3xl">
+                <button class="quick-reply-btn surface rounded-xl p-4 text-left hover:bg-white/70 dark:hover:bg-slate-800/70 elevate">
                   <h3 class="font-semibold">Compare Flu and COVID</h3>
-                  <p class="text-sm text-slate-600">Main differences in symptoms and prevention.</p>
+                  <p class="text-sm text-slate-600 dark:text-slate-400">Main differences in symptoms and prevention.</p>
                 </button>
-                <button class="quick-reply-btn bg-white border border-slate-200 p-4 rounded-xl shadow hover:shadow-md text-left">
-                  <h3 class="font-semibold">Explain Lung Cancer</h3>
-                  <p class="text-sm text-slate-600">What are primary risks and symptoms?</p>
+                <button class="quick-reply-btn surface rounded-xl p-4 text-left hover:bg-white/70 dark:hover:bg-slate-800/70 elevate">
+                  <h3 class="font-semibold">Explain the Common Cold</h3>
+                  <p class="text-sm text-slate-600 dark:text-slate-400">Usual symptoms and general care tips.</p>
+                </button>
+                <button class="quick-reply-btn surface rounded-xl p-4 text-left hover:bg-white/70 dark:hover:bg-slate-800/70 elevate">
+                  <h3 class="font-semibold">List respiratory illnesses</h3>
+                  <p class="text-sm text-slate-600 dark:text-slate-400">Get a quick list of examples.</p>
                 </button>
               </div>
 
-              <div id="suggestions-micwin15" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
-                <button class="quick-reply-btn bg-white border border-slate-200 p-4 rounded-xl shadow hover:shadow-md text-left">
+              <!-- Suggestions: MicWin 1.5 (advanced) -->
+              <div id="suggestions-micwin15" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full max-w-3xl">
+                <button class="quick-reply-btn surface rounded-xl p-4 text-left hover:bg-white/70 dark:hover:bg-slate-800/70 elevate">
                   <h3 class="font-semibold">Build a Landing Page (Tailwind)</h3>
-                  <p class="text-sm text-slate-600">Hero, CTA, responsive layout.</p>
+                  <p class="text-sm text-slate-600 dark:text-slate-400">Hero, CTA, responsive layout.</p>
                 </button>
-                <button class="quick-reply-btn bg-white border border-slate-200 p-4 rounded-xl shadow hover:shadow-md text-left">
+                <button class="quick-reply-btn surface rounded-xl p-4 text-left hover:bg-white/70 dark:hover:bg-slate-800/70 elevate">
                   <h3 class="font-semibold">Make a Todo App (HTML/CSS/JS)</h3>
-                  <p class="text-sm text-slate-600">Local storage, add/toggle/delete.</p>
+                  <p class="text-sm text-slate-600 dark:text-slate-400">Local storage, add/toggle/delete.</p>
+                </button>
+                <button class="quick-reply-btn surface rounded-xl p-4 text-left hover:bg-white/70 dark:hover:bg-slate-800/70 elevate">
+                  <h3 class="font-semibold">Compare multiple diseases</h3>
+                  <p class="text-sm text-slate-600 dark:text-slate-400">Generate a comparison table.</p>
                 </button>
               </div>
             </div>
@@ -140,20 +235,20 @@
 
         <!-- Composer -->
         <div class="mt-4">
-          <div class="surface rounded-2xl p-3 sm:p-4 shadow-sm">
-            <div class="flex items-center gap-3">
-              <label for="file-upload" class="cursor-pointer">
-                <div class="p-2 rounded-full bg-slate-100 hover:bg-slate-200">
-                  <span class="material-symbols-outlined text-slate-600">attachment</span>
-                </div>
-                <input id="file-upload" type="file" class="hidden" accept=".json" />
-              </label>
-              <input id="user-input" type="text" placeholder="Type your message… e.g., “Explain common cold and lung cancer”"
-                class="flex-1 p-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" />
-              <button id="send-btn" class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl">
+          <div class="surface elevate rounded-2xl p-2 sm:p-3">
+            <div class="flex items-center gap-2 sm:gap-3">
+              <div class="hidden sm:block">
+                <label for="file-upload" class="cursor-pointer">
+                  <div class="w-10 h-10 surface rounded-xl grid place-items-center toolbar-btn" title="Attach JSON">
+                    <span class="material-symbols-outlined">attach_file</span>
+                  </div>
+                </label>
+              </div>
+              <input id="user-input" type="text" placeholder='Type your message… e.g., "Explain common cold and lung cancer"' class="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus-ring text-[15px]" />
+              <button id="send-btn" class="w-11 h-11 rounded-xl bg-blue-600 hover:bg-blue-700 text-white grid place-items-center toolbar-btn">
                 <span class="material-symbols-outlined">send</span>
               </button>
-              <button id="regen-btn" class="bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-xl">
+              <button id="regen-btn" class="w-11 h-11 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white grid place-items-center toolbar-btn">
                 <span class="material-symbols-outlined">autorenew</span>
               </button>
             </div>
@@ -164,6 +259,24 @@
     </main>
   </div>
 
+  <!-- Hidden inputs (for script hooks) -->
+  <input id="file-upload" type="file" class="hidden" accept=".json" />
+
+  <!-- App script (ESM) -->
   <script type="module" src="./script.js"></script>
+
+  <script>
+    // Simple click outside to open/close model menu
+    (function() {
+      const trigger = document.getElementById('selected-model-name')?.closest('button');
+      const menu = document.getElementById('model-menu');
+      if (!trigger || !menu) return;
+      let open = false;
+      const show = () => { menu.classList.remove('hidden'); open = true; };
+      const hide = () => { menu.classList.add('hidden'); open = false; };
+      trigger.addEventListener('click', (e) => { e.preventDefault(); open ? hide() : show(); });
+      document.addEventListener('click', (e) => { if (open && !menu.contains(e.target) && !trigger.contains(e.target)) hide(); });
+    })();
+  </script>
 </body>
 </html>
