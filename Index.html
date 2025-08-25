@@ -1,476 +1,280 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="system">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MicroWare, LLC — Introducing MicWin AI</title>
-  <meta name="description" content="MicroWare, LLC introduces MicWin AI: MicWin 1 (out now), MicWin 1.5 (coming soon), and the MicWin 2 roadmap." />
-  <meta name="color-scheme" content="light dark" />
+  <title>MicroWare LLC — Introducing MicWin AI</title>
+  <meta name="description" content="MicroWare LLC — MicWin AI product family overview: MicWin 1, MicWin 1.5, and plans for MicWin 2. Free to use." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* ===== THEME TOKENS (Google-ish Material vibes) ===== */
     :root{
-      /* Light */
-      --bg: #f6f8fb;
-      --surface: #ffffff;
-      --on-surface: #1f2937;
-      --muted: #5f6b7a;
-      --outline: #e7ebf0;
-      --brand: #1a73e8;           /* Google blue-ish */
-      --brand-2:#8e66ff;          /* accent */
-      --accent:#00c28e;
-      --danger:#ea4335;           /* Google red */
-      --warn:#f9ab00;             /* Google amber */
-      --ok:#34a853;               /* Google green */
-      --radius: 16px;
-      --shadow-1: 0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
-      --shadow-2: 0 6px 18px rgba(18, 38, 63, .08);
-      --chip-bg:#eef2f7;
-      --chip-fg:#3b4758;
-      --kbd:#f2f4f7;
-      --ring: 0 0 0 3px rgba(26,115,232,.22);
-      --link: #1a73e8;
-      --gradient-1: radial-gradient(1200px 600px at 10% -20%, rgba(26,115,232,.08) 0%, transparent 60%),
-                    radial-gradient(1200px 600px at 110% 120%, rgba(142,102,255,.10) 0%, transparent 60%);
-    }
-    @media (prefers-color-scheme: dark){
-      :root{
-        --bg: #0b0f14;
-        --surface: #0f141b;
-        --on-surface: #eaf1ff;
-        --muted: #9aa6b2;
-        --outline: #1f2a39;
-        --brand: #6aa8ff;
-        --brand-2:#b18aff;
-        --accent:#66e5c3;
-        --danger:#ff6d6d;
-        --warn:#ffd166;
-        --ok:#7bff8a;
-        --chip-bg:#0f1722;
-        --chip-fg:#b7c2cf;
-        --kbd:#111b27;
-        --ring: 0 0 0 3px rgba(106,168,255,.28);
-        --link:#6aa8ff;
-        --gradient-1: radial-gradient(1200px 600px at 10% -20%, rgba(106,168,255,.12) 0%, transparent 60%),
-                      radial-gradient(1200px 600px at 110% 120%, rgba(177,138,255,.12) 0%, transparent 60%);
-      }
-    }
-    /* Manual override when data-theme is set */
-    html[data-theme="light"]{
-      --bg: #f6f8fb; --surface:#fff; --on-surface:#1f2937; --muted:#5f6b7a; --outline:#e7ebf0;
-      --brand:#1a73e8; --brand-2:#8e66ff; --accent:#00c28e; --danger:#ea4335; --warn:#f9ab00; --ok:#34a853;
-      --chip-bg:#eef2f7; --chip-fg:#3b4758; --kbd:#f2f4f7; --ring:0 0 0 3px rgba(26,115,232,.22);
-      --link:#1a73e8;
-      --gradient-1: radial-gradient(1200px 600px at 10% -20%, rgba(26,115,232,.08) 0%, transparent 60%),
-                    radial-gradient(1200px 600px at 110% 120%, rgba(142,102,255,.10) 0%, transparent 60%);
-    }
-    html[data-theme="dark"]{
-      --bg:#0b0f14; --surface:#0f141b; --on-surface:#eaf1ff; --muted:#9aa6b2; --outline:#1f2a39;
-      --brand:#6aa8ff; --brand-2:#b18aff; --accent:#66e5c3; --danger:#ff6d6d; --warn:#ffd166; --ok:#7bff8a;
-      --chip-bg:#0f1722; --chip-fg:#b7c2cf; --kbd:#111b27; --ring:0 0 0 3px rgba(106,168,255,.28);
-      --link:#6aa8ff;
-      --gradient-1: radial-gradient(1200px 600px at 10% -20%, rgba(106,168,255,.12) 0%, transparent 60%),
-                    radial-gradient(1200px 600px at 110% 120%, rgba(177,138,255,.12) 0%, transparent 60%);
+      --bg: #0b0f15;
+      --surface: #121826;
+      --muted: #94a3b8;
+      --text: #e5e7eb;
+      --brand: #60a5fa;
+      --brand-2: #a78bfa;
+      --ok: #34d399;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --ring: #1f2937;
+      --card: #0f1623;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      color:var(--on-surface);
-      font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background: var(--bg);
-      background-image: var(--gradient-1);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:radial-gradient(1000px 500px at 10% -10%, rgba(96,165,250,.25), transparent 60%),
+                 radial-gradient(800px 600px at 120% 20%, rgba(167,139,250,.18), transparent 60%),
+                 linear-gradient(180deg, #0b0f15 0%, #0b0f15 100%);
+      letter-spacing: .2px;
     }
 
-    .wrap{width:min(1100px, 92vw); margin-inline:auto; padding: 20px 0 64px;}
+    a{color:inherit}
 
-    /* ===== App Bar (Material-like) ===== */
+    .container{width:min(1200px,92%);margin-inline:auto}
+
     header{
-      display:flex; align-items:center; justify-content:space-between; gap:14px;
-      padding: 10px 14px;
-      border-radius: 20px;
-      background: var(--surface);
-      box-shadow: var(--shadow-2);
-      position: sticky; top: 12px; z-index: 20;
-      border: 1px solid var(--outline);
+      position:sticky;top:0;z-index:50;
+      backdrop-filter:saturate(140%) blur(10px);
+      background:linear-gradient(180deg, rgba(11,15,21,.75), rgba(11,15,21,.5));
+      border-bottom:1px solid rgba(148,163,184,.15);
     }
-    .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit}
-    .logo{
-      width:36px; height:36px; border-radius:10px;
-      background: conic-gradient(from 210deg, var(--brand), var(--brand-2), var(--accent), var(--brand));
-      display:grid; place-items:center; font-weight:800; letter-spacing:.4px; color:#0b0f14;
-      border:1px solid rgba(0,0,0,.06);
-    }
-    nav{display:flex; gap:6px; flex-wrap:wrap}
-    .chip{
-      padding:8px 12px; border-radius:999px;
-      color:var(--chip-fg); background:var(--chip-bg); border:1px solid var(--outline);
-      font-weight:600;
-    }
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .logo{width:36px;height:36px;border-radius:10px;background:conic-gradient(from 210deg, var(--brand), var(--brand-2), #22d3ee, var(--brand));box-shadow:0 6px 20px rgba(96,165,250,.35)}
+    .brand h1{font-size:18px;margin:0;font-weight:800;letter-spacing:.4px}
+    .nav a.btn{padding:10px 14px;border:1px solid rgba(148,163,184,.2);border-radius:12px;text-decoration:none;display:inline-flex;gap:8px;align-items:center}
+    .nav a.btn:hover{border-color:rgba(148,163,184,.35)}
 
-    /* ===== Hero ===== */
-    .hero{
-      margin: 24px 2px 18px;
-      padding: clamp(18px, 3vw, 28px);
-      border-radius: 22px;
-      background: var(--surface);
-      border:1px solid var(--outline);
-      box-shadow: var(--shadow-2);
-      position: relative;
-      overflow: hidden;
-    }
-    .hero h1{margin:0 0 8px; font-size: clamp(28px, 4.2vw, 42px); letter-spacing:.2px}
-    .hero p{color:var(--muted); margin:0 0 14px; max-width:60ch}
-    .badges{display:flex; gap:8px; flex-wrap:wrap; margin: 8px 0 14px}
-    .badge{
-      font-size:12.5px; color:#0b0f14; background: #e3f2fd;
-      padding:7px 10px; border-radius:999px; font-weight:700; letter-spacing:.2px; border:1px solid var(--outline);
-    }
-    .badge.alt{background:#e8f0fe}
-    .badge.roadmap{background:#efe9ff}
-    .cta{
-      display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px; text-decoration:none;
-      font-weight:800; color:#fff; background: linear-gradient(135deg, var(--brand), var(--accent));
-      border:0; box-shadow: var(--shadow-2); position:relative; overflow:hidden;
-    }
-    .cta.secondary{
-      color:var(--on-surface); background:transparent; border:1px solid var(--outline); box-shadow: var(--shadow-1);
-    }
+    .hero{padding:72px 0 40px}
+    .hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:28px;align-items:center}
+    @media (max-width:900px){.hero-grid{grid-template-columns:1fr;}}
 
-    /* ===== Grid & Cards ===== */
-    .grid{display:grid; grid-template-columns: repeat(12, 1fr); gap: clamp(12px, 2.2vw, 20px); margin-top: 22px;}
-    .card{
-      background: var(--surface);
-      border:1px solid var(--outline);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-1);
-      padding: clamp(14px, 2.2vw, 20px);
-    }
-    .col-7{grid-column: span 7}
-    .col-5{grid-column: span 5}
-    .col-12{grid-column: 1/-1}
-    @media (max-width: 900px){ .col-7, .col-5, .col-12{grid-column: 1/-1} }
+    .eyebrow{display:inline-flex;gap:8px;align-items:center;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);color:#cfe5ff;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
+    .eyebrow .dot{width:6px;height:6px;border-radius:999px;background:var(--ok);box-shadow:0 0 8px var(--ok)}
 
-    h2{margin:.2rem 0 .5rem; letter-spacing:.2px}
-    .muted{color:var(--muted)}
-    .list{display:grid; gap:10px; margin:12px 0 0; padding:0; list-style:none;}
-    .li{
-      display:flex; gap:10px; align-items:flex-start; background:color-mix(in oklab, var(--surface) 92%, var(--bg) 8%);
-      padding:10px 12px; border-radius:12px; border:1px solid var(--outline);
-    }
-    .dot{width:10px; height:10px; border-radius:999px; margin-top:6px; background:var(--brand)}
-    .dot.ok{background:var(--ok)} .dot.warn{background:var(--warn)} .dot.bad{background:var(--danger)} .dot.info{background:var(--brand)}
+    h2.display{font-size:clamp(28px, 4.2vw, 50px);line-height:1.05;margin:14px 0 10px}
+    p.lead{color:var(--muted);font-size:clamp(14px,1.8vw,18px);margin:0 0 18px;max-width:60ch}
 
-    .pill{
-      display:inline-block; font-size:12px; padding:4px 8px; border-radius:999px; border:1px solid var(--outline);
-      color:var(--muted); margin-left:8px; background: color-mix(in oklab, var(--surface) 70%, var(--bg) 30%);
-    }
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+    .cta{background:linear-gradient(135deg, var(--brand), var(--brand-2));border:none;border-radius:14px;padding:12px 16px;font-weight:700;color:#0b0f15;text-decoration:none;box-shadow:var(--shadow)}
+    .ghost{background:transparent;border:1px solid rgba(148,163,184,.25);color:var(--text)}
 
-    .accordion{margin-top: 8px}
-    details{
-      background:color-mix(in oklab, var(--surface) 92%, var(--bg) 8%); border:1px solid var(--outline); border-radius:12px; padding:12px 14px; margin-top:10px
-    }
-    summary{cursor:pointer; font-weight:700}
-    details p{margin:.6rem 0 0; color:var(--muted)}
+    .card{background:linear-gradient(180deg, var(--card), #0b0f15);border:1px solid rgba(148,163,184,.12);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+    .grid{display:grid;gap:16px}
+    .grid.cols-3{grid-template-columns:1fr 1fr 1fr}
+    @media (max-width:900px){.grid.cols-3{grid-template-columns:1fr}}
 
-    footer{
-      margin-top: 30px; padding: 16px; text-align:center; color:var(--muted);
-      border-top: 1px solid var(--outline); background: color-mix(in oklab, var(--surface) 60%, var(--bg) 40%);
-      border-radius: 16px;
-    }
+    .pill{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid rgba(148,163,184,.2);background:rgba(255,255,255,.03);font-size:12px;color:var(--muted)}
+    .pill .badge{width:7px;height:7px;border-radius:999px}
 
-    /* Theme toggle button */
-    .toggle{
-      display:inline-flex; align-items:center; gap:8px; border:1px solid var(--outline);
-      background: var(--surface); color: var(--on-surface); padding:8px 12px; border-radius: 999px; cursor:pointer;
-      font-weight:700; box-shadow: var(--shadow-1);
-    }
-    .toggle:focus-visible{outline:none; box-shadow:var(--ring)}
-    .icon{width:18px; height:18px; display:inline-block}
+    .checklist{display:grid;gap:10px;margin:10px 0 0;padding:0}
+    .checklist li{list-style:none;display:flex;gap:10px;align-items:flex-start;color:#cbd5e1}
+    .check{flex:0 0 22px;height:22px;border-radius:6px;border:1px solid rgba(148,163,184,.25);display:grid;place-items:center}
 
-    /* Input + button (MicWin 2 signup) */
-    .signup{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
-    .input{
-      background:var(--surface); border:1px solid var(--outline); color:var(--on-surface);
-      padding:10px 12px; border-radius:12px; min-width: 240px; box-shadow:var(--shadow-1);
-    }
-    .btn{
-      background:var(--surface); color:var(--on-surface); border:1px solid var(--outline); padding:10px 14px;
-      border-radius:12px; cursor:pointer; font-weight:700; box-shadow:var(--shadow-1)
-    }
-    .btn:focus-visible{outline:none; box-shadow:var(--ring)}
-    .note{font-size:13px; color:var(--muted); margin-top:6px}
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    section{padding:28px 0}
+    .section-title{display:flex;align-items:center;gap:10px;margin:0 0 10px}
+    .section-title h3{margin:0;font-size:20px}
 
-    /* Minimal ripple (Google-y) */
-    .ripple{position:relative; overflow:hidden}
-    .ripple::after{
-      content:""; position:absolute; inset:auto; width:0;height:0; border-radius:50%;
-      background: currentColor; opacity:.16; transform: translate(-50%,-50%);
-      pointer-events:none; transition: width .35s ease,height .35s ease,opacity .6s ease;
-    }
-    .ripple[data-rx][data-ry]::after{
-      left: attr(data-rx px); top: attr(data-ry px);
-    }
+    .disclaimer{font-size:12px;color:#94a3b8;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.35);padding:10px;border-radius:12px}
+
+    footer{margin-top:30px;padding:40px 0 60px;color:#9aa7bd;border-top:1px solid rgba(148,163,184,.15)}
+    .footer-grid{display:grid;gap:16px;grid-template-columns:1fr auto;align-items:center}
+    @media (max-width:700px){.footer-grid{grid-template-columns:1fr}}
+
+    /* Tiny flourish stars */
+    .stars{position:absolute;inset:0;pointer-events:none;opacity:.4}
+    .star{position:absolute;width:2px;height:2px;background:linear-gradient(180deg,#fff,#9bd);border-radius:99px;filter:blur(.2px)}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header aria-label="Site header">
-      <a class="brand" href="#" aria-label="MicroWare Home">
-        <div class="logo" aria-hidden="true">MW</div>
-        <div>
-          <strong>MicroWare, LLC</strong><br/>
-          <span class="muted">Systems • AI • Tools</span>
-        </div>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="MicroWare Home">
+        <span class="logo" aria-hidden="true"></span>
+        <h1>MicroWare <span style="font-weight:600;opacity:.7">LLC</span></h1>
       </a>
-      <nav>
-        <span class="chip">Products</span>
-        <span class="chip">Docs</span>
-        <span class="chip">Support</span>
-        <button id="themeToggle" class="toggle ripple" type="button" aria-pressed="false" title="Toggle theme">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <!-- Sun/Moon combo icon -->
-            <path d="M12 3v2M12 19v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M3 12h2M19 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" fill="currentColor" opacity=".15"/>
-          </svg>
-          <span id="themeLabel">System</span>
-        </button>
+      <nav class="actions">
+        <a class="btn" href="#roadmap" aria-label="MicWin roadmap">Roadmap</a>
+        <a class="btn" href="#products" aria-label="MicWin products">Products</a>
+        <a class="btn" href="#legal" aria-label="Legal">Legal</a>
       </nav>
-    </header>
+    </div>
+  </header>
 
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="badges">
-        <span class="badge">Introducing MicWin AI</span>
-        <span class="badge alt">MicWin 1.5 — Coming Soon</span>
-        <span class="badge roadmap">MicWin 2 — In Planning</span>
+  <main id="top" class="container">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow"><span class="dot"></span> Introducing</span>
+          <h2 class="display">MicWin&nbsp;AI</h2>
+          <p class="lead">The MicWin AI family is evolving. <strong>MicWin&nbsp;1</strong> is available today, <strong>MicWin&nbsp;1.5</strong> arrives soon with coding skills and deeper reasoning, and <strong>MicWin&nbsp;2</strong> is on the horizon with expanded astrophysics knowledge, richer thinking options, and Video Link Testing. All versions are <strong>free to use</strong>.</p>
+          <div class="cta-row">
+            <a class="cta" href="MicWin/index.html">Open MicWin</a>
+            <a class="cta ghost" href="#products">Explore Features</a>
+          </div>
+        </div>
+        <div>
+          <div class="card" aria-labelledby="quick-status">
+            <div class="section-title"><h3 id="quick-status">Release Status</h3></div>
+            <div class="grid">
+              <div class="pill"><span class="badge" style="background:var(--ok)"></span> MicWin 1 — Out now</div>
+              <div class="pill"><span class="badge" style="background:var(--warn)"></span> MicWin 1.5 — Coming soon</div>
+              <div class="pill"><span class="badge" style="background:var(--brand-2)"></span> MicWin 2 — In planning</div>
+            </div>
+            <ul class="checklist">
+              <li><span class="check">✓</span> Free to use across MicWin family</li>
+              <li><span class="check">✓</span> One use case for <strong>PS6</strong> with MicWin&nbsp;1</li>
+              <li><span class="check">✓</span> One use case for <strong>AI</strong> with MicWin&nbsp;1.5</li>
+              <li><span class="check">✓</span> Plans for <strong>Video Link Testing</strong> in MicWin&nbsp;2</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <h1 id="hero-title">Smarter Windows for Makers & Med-curious Teams</h1>
-      <p>Meet <strong>MicWin AI</strong> — an evolving platform from MicroWare pairing desktop utility with careful AI assistance. Explore today’s <strong>MicWin 1</strong>, what’s coming in <strong>MicWin 1.5</strong>, and peek at the <strong>MicWin 2</strong> roadmap.</p>
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px">
-        <a class="cta ripple" href="MicWin/index.html">Open MicWin</a>
-        <a class="cta secondary ripple" href="#versions">See Versions</a>
+    </section>
+
+    <section id="products">
+      <div class="section-title">
+        <h3>MicWin Product Line</h3>
+      </div>
+      <div class="grid cols-3">
+        <article class="card" aria-labelledby="mw1">
+          <h4 id="mw1" style="margin:0 0 8px">MicWin 1</h4>
+          <p style="margin:0 0 10px;color:var(--muted)">Available now • Early medical information • Experimental PS6 use</p>
+          <ul class="checklist">
+            <li><span class="check">★</span> Provides basic medical information.
+            </li>
+            <li><span class="check">★</span> <strong>Not recommended</strong> for real‑world medical use.</li>
+            <li><span class="check">★</span> Includes a single, experimental <strong>PS6</strong> use case.</li>
+          </ul>
+          <div class="disclaimer" role="note">MicWin 1 may contain inaccuracies. It is <strong>not a medical device</strong> and is not a substitute for professional advice.</div>
+        </article>
+
+        <article class="card" aria-labelledby="mw15">
+          <h4 id="mw15" style="margin:0 0 8px">MicWin 1.5</h4>
+          <p style="margin:0 0 10px;color:var(--muted)">Coming soon • Coding features • More medical info • Deeper thinking</p>
+          <ul class="checklist">
+            <li><span class="check">★</span> Adds coding features for programmers (generate, explain, and refactor code).</li>
+            <li><span class="check">★</span> More medical information with better reasoning.</li>
+            <li><span class="check">★</span> Could be recommended in some contexts, but <strong>not fully reliable</strong> yet.</li>
+            <li><span class="check">★</span> Includes a single, exploratory <strong>AI</strong> use case.</li>
+          </ul>
+          <div class="disclaimer" role="note">MicWin 1.5 will still have limitations. Double‑check important outputs, especially medical or technical content.</div>
+        </article>
+
+        <article class="card" aria-labelledby="mw2">
+          <h4 id="mw2" style="margin:0 0 8px">MicWin 2</h4>
+          <p style="margin:0 0 10px;color:var(--muted)">Planned • Astrophysics • More thinking options • Video Link Testing</p>
+          <ul class="checklist">
+            <li><span class="check">★</span> Expanded knowledge for <strong>astrophysics</strong>.</li>
+            <li><span class="check">★</span> More options for <strong>thinking</strong> styles and strategies.</li>
+            <li><span class="check">★</span> Built‑in <strong>Video Link Testing</strong> (evaluate linked clips).</li>
+          </ul>
+          <div class="pill" style="margin-top:8px"><span class="badge" style="background:var(--brand)"></span> In research & planning</div>
+        </article>
       </div>
     </section>
 
-    <section id="versions" class="grid" aria-label="MicWin versions">
-      <!-- MicWin 1 -->
-      <article class="card col-7" aria-labelledby="mw1">
-        <h2 id="mw1">MicWin 1 <span class="pill">Available now</span></h2>
-        <p class="muted">First release of MicWin AI with cautious medical info access and an experimental console for a single platform integration.</p>
-        <ul class="list" role="list">
-          <li class="li"><span class="dot bad" aria-hidden="true"></span>
-            <div>
-              <strong>Medical info (not recommended)</strong><br/>
-              <span class="muted">Includes general medical information. <em>Not</em> recommended for decision-making; educational reference only.</span>
-            </div>
-          </li>
-          <li class="li"><span class="dot ok" aria-hidden="true"></span>
-            <div>
-              <strong>One use for PS6</strong><br/>
-              <span class="muted">Ships with a single supported integration for PlayStation&nbsp;6 (PS6) use case.</span>
-            </div>
-          </li>
-          <li class="li"><span class="dot warn" aria-hidden="true"></span>
-            <div>
-              <strong>Baseline reasoning</strong><br/>
-              <span class="muted">Good for simple tasks; complex workflows may require manual oversight.</span>
-            </div>
-          </li>
-        </ul>
-
-        <div class="accordion" aria-label="MicWin 1 disclaimers">
-          <details>
-            <summary>Medical reliability notice</summary>
-            <p>MicWin&nbsp;1’s medical content may contain inaccuracies and is not a substitute for professional advice, diagnosis, or treatment.</p>
-          </details>
-          <details>
-            <summary>Recommendation status</summary>
-            <p>Not recommended for clinical or critical tasks. Use for learning and experimentation only.</p>
-          </details>
+    <section id="roadmap">
+      <div class="section-title">
+        <h3>Roadmap Highlights</h3>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <ul class="checklist">
+            <li><span class="check">✓</span> <strong>Today:</strong> MicWin 1 available with free access and an experimental PS6 use case.</li>
+            <li><span class="check">→</span> <strong>Soon:</strong> MicWin 1.5 adds coding features, more medical info, and improved thinking; still not fully reliable for critical use.</li>
+            <li><span class="check">★</span> <strong>Future:</strong> MicWin 2 expands astrophysics knowledge, thinking controls, and Video Link Testing.</li>
+          </ul>
         </div>
-      </article>
-
-      <!-- MicWin 1.5 -->
-      <article class="card col-5" aria-labelledby="mw15">
-        <h2 id="mw15">MicWin 1.5 <span class="pill">Coming soon</span></h2>
-        <ul class="list" role="list">
-          <li class="li"><span class="dot ok" aria-hidden="true"></span>
-            <div>
-              <strong>Coding features for programmers</strong><br/>
-              <span class="muted">Editor helpers, snippets, and task flows designed for dev productivity.</span>
-            </div>
-          </li>
-          <li class="li"><span class="dot ok" aria-hidden="true"></span>
-            <div>
-              <strong>More thinking</strong><br/>
-              <span class="muted">Improved planning and stepwise reasoning for longer tasks.</span>
-            </div>
-          </li>
-          <li class="li"><span class="dot warn" aria-hidden="true"></span>
-            <div>
-              <strong>Expanded medical info</strong><br/>
-              <span class="muted">Broader medical topics and references. Could be recommended for non-critical research, but still not fully reliable.</span>
-            </div>
-          </li>
-          <li class="li"><span class="dot ok" aria-hidden="true"></span>
-            <div>
-              <strong>One use for AI</strong><br/>
-              <span class="muted">Ships with a single specialized AI use case at launch.</span>
-            </div>
-          </li>
-        </ul>
-
-        <div class="accordion" aria-label="MicWin 1.5 disclaimers">
-          <details>
-            <summary>Reliability & recommendation</summary>
-            <p>MicWin&nbsp;1.5 may be suitable for broader educational and research scenarios. Even so, it is not fully reliable for clinical or mission-critical use.</p>
-          </details>
-        </div>
-      </article>
-
-      <!-- MicWin 2 (Roadmap) -->
-      <article class="card col-12" aria-labelledby="mw2">
-        <h2 id="mw2">MicWin 2 <span class="pill">Roadmap</span></h2>
-        <p class="muted">Planned direction for the next major release. Subject to change as we learn from users.</p>
-        <ul class="list" role="list">
-          <li class="li"><span class="dot info" aria-hidden="true"></span>
-            <div>
-              <strong>More knowledge for astrophysics</strong><br/>
-              <span class="muted">Focus areas include exoplanets, stellar evolution, orbital mechanics, cosmology summaries, and data-aware explanations suited for beginners to enthusiasts.</span>
-            </div>
-          </li>
-          <li class="li"><span class="dot ok" aria-hidden="true"></span>
-            <div>
-              <strong>More options for thinking</strong><br/>
-              <span class="muted">Selectable “Thinking Modes” (e.g., <em>Concise</em>, <em>Step-by-Step</em>, <em>Planner</em>) to match depth vs. speed, with clearer rationales and intermediate steps.</span>
-            </div>
-          </li>
-          <li class="li"><span class="dot ok" aria-hidden="true"></span>
-            <div>
-              <strong>Video Link Testing</strong><br/>
-              <span class="muted">Validate video URLs, auto-preview metadata (title, duration, source), and test playback compatibility—all without storing user content.</span>
-            </div>
-          </li>
-        </ul>
-
-        <div class="accordion" aria-label="MicWin 2 notes">
-          <details>
-            <summary>Privacy & safety (planned)</summary>
-            <p>Video Link Testing will operate on user-provided links, avoid uploading content, and will show what checks were performed. Astrophysics content will cite public sources where appropriate. Thinking Modes will display rationale summaries for transparency.</p>
-          </details>
-          <details>
-            <summary>Medical notice (unchanged principle)</summary>
-            <p>MicWin is not a medical device. Even with improved knowledge features in future versions, content remains informational and not a substitute for professional advice.</p>
-          </details>
-        </div>
-
-        <form class="signup" id="signup" aria-labelledby="mw2">
-          <label class="sr-only" for="email">Email for MicWin 2 updates</label>
-          <input class="input" type="email" id="email" name="email" placeholder="you@domain.com" autocomplete="email" />
-          <button class="btn ripple" type="submit">Notify me</button>
-        </form>
-        <div id="signup-note" class="note" role="status" aria-live="polite"></div>
-      </article>
+      </div>
     </section>
 
-    <section class="grid" style="margin-top:20px">
-      <article class="card col-12" aria-labelledby="disclaimer">
-        <h2 id="disclaimer">Important disclaimer</h2>
-        <p class="muted">MicWin AI provides informational content only. It is not a medical device and does not offer medical advice. Always consult a qualified professional for diagnosis and treatment.</p>
-        <code style="display:block; margin-top:10px; background:color-mix(in oklab, var(--surface) 70%, var(--bg) 30%); padding:10px 12px; border-radius:12px; border:1px solid var(--outline)">
-          status: "informational-only"; recommendation: { micwin1: "not recommended", micwin15: "possible for non-critical use", reliable: false }
-        </code>
-      </article>
+    <section id="legal">
+      <div class="section-title">
+        <h3>Important Notes</h3>
+      </div>
+      <div class="card">
+        <p style="margin:0 0 10px;color:var(--muted)">MicWin AI is provided for informational and educational purposes only. It does <strong>not</strong> offer medical, legal, or professional advice and should not be used for diagnosis, treatment, or safety‑critical decisions. Always verify results and consult qualified professionals.</p>
+        <p class="disclaimer">By using MicWin AI, you agree that usage is at your own discretion and risk. MicroWare LLC disclaims responsibility for outcomes based on AI suggestions.</p>
+      </div>
     </section>
 
-    <footer>
-      © <span id="year"></span> MicroWare, LLC • All rights reserved.
-    </footer>
-  </div>
+    <section>
+      <div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <div>
+          <strong>MicWin is free to use.</strong>
+          <div style="color:var(--muted);font-size:14px">No sign‑up required. Click below to launch.</div>
+        </div>
+        <a class="cta" href="MicWin/index.html" aria-label="Launch MicWin">Launch MicWin</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>© <span id="y"></span> MicroWare LLC • All rights reserved</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn" href="#top">Back to top</a>
+        <a class="btn" href="#legal">Terms & Notes</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Decorative stars -->
+  <div class="stars" aria-hidden="true" id="stars"></div>
 
   <script>
-    // ==== Year ====
-    document.getElementById('year').textContent = new Date().getFullYear();
+    // Year in footer
+    document.getElementById('y').textContent = new Date().getFullYear();
 
-    // ==== Keyboard shortcut: jump to versions ====
-    document.addEventListener('keydown', (e)=>{
-      if ((e.key === 'j' || e.key === 'J') && (e.ctrlKey || e.metaKey)) {
-        e.preventDefault();
-        document.getElementById('versions')?.scrollIntoView({behavior:'smooth'});
+    // Smooth scroll for in-page links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'}); }
+      });
+    });
+
+    // Tiny drifting stars for a subtle tech vibe
+    const starField = document.getElementById('stars');
+    const STAR_COUNT = 60;
+    const stars = [];
+    function spawn(){
+      for(let i=0;i<STAR_COUNT;i++){
+        const s = document.createElement('div');
+        s.className = 'star';
+        s.style.left = Math.random()*100 + 'vw';
+        s.style.top = Math.random()*120 + 'vh';
+        s.style.opacity = (0.3 + Math.random()*0.7).toFixed(2);
+        s.dataset.vx = (Math.random()*.05 + .02) * (Math.random()>.5?1:-1);
+        s.dataset.vy = (Math.random()*.05 + .02) * (Math.random()>.5?1:-1);
+        starField.appendChild(s);
+        stars.push(s);
       }
-    });
-
-    // ==== Details focus ring mimic ====
-    document.querySelectorAll('details').forEach(d=>{
-      d.addEventListener('toggle', ()=>{
-        d.style.boxShadow = d.open ? 'var(--ring)' : 'none';
-      })
-    });
-
-    // ==== Minimal ripple (for elements with .ripple) ====
-    const rippleTargets = document.querySelectorAll('.ripple');
-    rippleTargets.forEach(el=>{
-      el.addEventListener('pointerdown', (e)=>{
-        const rect = el.getBoundingClientRect();
-        el.style.setProperty('--rx', e.clientX - rect.left + 'px');
-        el.style.setProperty('--ry', e.clientY - rect.top + 'px');
-        el.setAttribute('data-rx', e.clientX - rect.left);
-        el.setAttribute('data-ry', e.clientY - rect.top);
-        el.classList.add('rippling');
-        // CSS attr() for px is still limited; we simulate with inline vars if needed
-      }, {passive:true});
-    });
-
-    // ==== Theme handling (System / Light / Dark) ====
-    const THEME_KEY = 'mw-theme';
-    const htmlEl = document.documentElement;
-    const btn = document.getElementById('themeToggle');
-    const label = document.getElementById('themeLabel');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-
-    function applyTheme(mode){
-      // mode: 'system' | 'light' | 'dark'
-      htmlEl.setAttribute('data-theme', mode);
-      localStorage.setItem(THEME_KEY, mode);
-      label.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
-      btn.setAttribute('aria-pressed', mode !== 'system'); // pressed if explicitly chosen
     }
-
-    function initTheme(){
-      const stored = localStorage.getItem(THEME_KEY) || 'system';
-      applyTheme(stored);
+    function tick(){
+      for(const s of stars){
+        let x = parseFloat(s.style.left);
+        let y = parseFloat(s.style.top);
+        x += parseFloat(s.dataset.vx);
+        y += parseFloat(s.dataset.vy);
+        if(x < -2) x = 102; if(x > 102) x = -2;
+        if(y < -2) y = 102; if(y > 130) y = -2;
+        s.style.left = x + 'vw';
+        s.style.top = y + 'vh';
+      }
+      requestAnimationFrame(tick);
     }
-
-    // Cycle: system -> light -> dark -> system
-    btn.addEventListener('click', ()=>{
-      const current = htmlEl.getAttribute('data-theme') || 'system';
-      const next = current === 'system' ? 'light' : current === 'light' ? 'dark' : 'system';
-      applyTheme(next);
-    });
-
-    // If user changes OS theme while in "system", reflect it instantly
-    prefersDark.addEventListener('change', ()=>{
-      if ((localStorage.getItem(THEME_KEY) || 'system') === 'system'){
-        applyTheme('system');
-      }
-    });
-
-    initTheme();
-
-    // ==== MicWin 2 simple "Notify me" demo (local only) ====
-    const form = document.getElementById('signup');
-    const note = document.getElementById('signup-note');
-    form?.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const email = (document.getElementById('email') || {}).value?.trim();
-      if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-        note.textContent = 'Please enter a valid email address.';
-        return;
-      }
-      note.textContent = `Thanks! We’ll let you know about MicWin 2 updates for ${email}.`;
-      form.reset();
-    });
+    spawn();
+    requestAnimationFrame(tick);
   </script>
 </body>
 </html>
