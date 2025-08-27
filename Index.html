@@ -1,279 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MicroWare LLC — Introducing MicWin AI</title>
-  <meta name="description" content="MicroWare LLC — MicWin AI product family: MicWin 1 (out), MicWin 1.5 (out), and MicWin 2‑lite (releasing late night on 8/29/25). Free to use." />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>MicroWare LLC — MicWin AI</title>
+  <meta name="description" content="Introducing MicWin AI by MicroWare LLC. MicWin 1 and 1.5 available; MicWin 2‑lite releases 8/28/25 7:00pm EST. Free to use."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg: #0b0f15;
-      --surface: #121826;
-      --muted: #94a3b8;
-      --text: #e5e7eb;
-      --brand: #60a5fa;
-      --brand-2: #a78bfa;
-      --ok: #34d399;
-      --warn: #f59e0b;
-      --danger: #ef4444;
-      --ring: #1f2937;
-      --card: #0f1623;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --bg:#ffffff;
+      --text:#0e1116;
+      --muted:#4b5563;
+      --line:#e5e7eb;
+      --panel:#f8fafc;
+      --brand:#0b57d0; /* calm blue, Google-esque */
+      --brand-ink:#0b57d0;
+      --radius:16px;
+      --shadow:0 12px 28px rgba(0,0,0,.06);
+      --shadow-sm:0 6px 16px rgba(0,0,0,.05);
     }
-
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#0b0d12; --text:#e6ebf5; --muted:#9aa7bd; --line:#1f2633; --panel:#111520; --brand:#82aaff; --brand-ink:#0b57d0; }
+    }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{
-      margin:0;
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Apple Color Emoji","Segoe UI Emoji";
-      color:var(--text);
-      background:radial-gradient(1000px 500px at 10% -10%, rgba(96,165,250,.25), transparent 60%),
-                 radial-gradient(800px 600px at 120% 20%, rgba(167,139,250,.18), transparent 60%),
-                 linear-gradient(180deg, #0b0f15 0%, #0b0f15 100%);
-      letter-spacing: .2px;
-    }
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 Inter,system-ui,Segoe UI,Roboto,Arial,Helvetica,sans-serif}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1200px;margin:0 auto;padding:0 24px}
 
-    a{color:inherit}
+    /* Header */
+    .appbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.7);backdrop-filter:saturate(140%) blur(14px);border-bottom:1px solid var(--line)}
+    @media (prefers-color-scheme: dark){ .appbar{background:rgba(11,13,18,.6);} }
+    .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:28px;height:28px;border-radius:7px;background:conic-gradient(from 220deg, #6ea8ff, #8c7bff, #6ea8ff);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+    .brand h1{font-size:16px;font-weight:700;letter-spacing:.2px;margin:0}
+    .links{display:flex;align-items:center;gap:20px;color:var(--muted)}
+    .links a{font-weight:500}
+    .cta{display:flex;align-items:center;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow-sm);font-weight:600}
+    .btn-primary{background:var(--brand);color:#fff;border-color:transparent}
+    @media (prefers-color-scheme: dark){ .btn{background:#0f1422;border-color:#1f2633} }
 
-    .container{width:min(1200px,92%);margin-inline:auto}
+    /* Hero */
+    .hero{padding:96px 0 48px;border-bottom:1px solid var(--line);background:linear-gradient(180deg, rgba(11,87,208,.06), rgba(11,87,208,0));}
+    .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:32px}
+    .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+    h1.display{font-size:56px;line-height:1.04;margin:.25em 0 .3em;letter-spacing:-.02em;font-weight:800}
+    @media (min-width:1024px){ h1.display{font-size:64px} }
+    .lede{font-size:18px;color:var(--muted);max-width:62ch;margin-bottom:22px}
+    .promo{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+    .promo strong{color:var(--brand)}
 
-    header{
-      position:sticky;top:0;z-index:50;
-      backdrop-filter:saturate(140%) blur(10px);
-      background:linear-gradient(180deg, rgba(11,15,21,.75), rgba(11,15,21,.5));
-      border-bottom:1px solid rgba(148,163,184,.15);
-    }
-    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
-    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-    .logo{width:36px;height:36px;border-radius:10px;background:conic-gradient(from 210deg, var(--brand), var(--brand-2), #22d3ee, var(--brand));box-shadow:0 6px 20px rgba(96,165,250,.35)}
-    .brand h1{font-size:18px;margin:0;font-weight:800;letter-spacing:.4px}
-    .nav a.btn{padding:10px 14px;border:1px solid rgba(148,163,184,.2);border-radius:12px;text-decoration:none;display:inline-flex;gap:8px;align-items:center}
-    .nav a.btn:hover{border-color:rgba(148,163,184,.35)}
+    .countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+    .timebox{border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center;background:#fff}
+    .timebox .num{font-size:30px;font-weight:800}
+    .timebox .lab{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.14em}
+    .date-note{font-size:13px;color:var(--muted);margin-top:8px}
 
-    .hero{padding:72px 0 40px}
-    .hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:28px;align-items:center}
-    @media (max-width:900px){.hero-grid{grid-template-columns:1fr;}}
+        /* Feature Cards */
+    section{padding:64px 0}
+    h3{font-size:28px;margin:0 0 14px;letter-spacing:-.01em}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .card{border:1px solid var(--line);background:#fff;border-radius:18px;padding:24px;box-shadow:0 8px 24px rgba(0,0,0,.06);transition:transform .2s ease, box-shadow .2s ease}
+    .card:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(0,0,0,.08)}
+    .tag{font-size:12px;color:var(--muted)}
+    .card h4{margin:.5em 0 .4em;font-size:20px}
+    .note{font-size:13px;color:var(--muted)}
+    ul{margin:.3em 0 .8em 1.2em}
+    li{margin:.25em 0}
+    .list-title{font-weight:600}
 
-    .eyebrow{display:inline-flex;gap:8px;align-items:center;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);color:#cfe5ff;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
-    .eyebrow .dot{width:6px;height:6px;border-radius:999px;background:var(--ok);box-shadow:0 0 8px var(--ok)}
+    /* Buttons hover */
+    .btn{transition:transform .12s ease, box-shadow .12s ease, background .2s ease}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(0,0,0,.08)}
+    .btn-primary:hover{filter:brightness(1.06)}
 
-    h2.display{font-size:clamp(28px, 4.2vw, 50px);line-height:1.05;margin:14px 0 10px}
-    p.lead{color:var(--muted);font-size:clamp(14px,1.8vw,18px);margin:0 0 18px;max-width:60ch}
+    /* Gallery */
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .shot{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
+    .shot img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+    .ribbon{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.85);padding:6px 10px;border:1px solid var(--line);border-radius:999px;font-size:12px}
+    @media (prefers-color-scheme: dark){ .ribbon{background:rgba(11,13,18,.7)} }
 
-    .cta-row{display:flex;gap:12px;flex-wrap:wrap}
-    .cta{background:linear-gradient(135deg, var(--brand), var(--brand-2));border:none;border-radius:14px;padding:12px 16px;font-weight:700;color:#0b0f15;text-decoration:none;box-shadow:var(--shadow)}
-    .ghost{background:transparent;border:1px solid rgba(148,163,184,.25);color:var(--text)}
+    /* Legal */
+    footer{border-top:1px solid var(--line);padding:22px 0 48px;color:var(--muted);font-size:13px}
 
-    .card{background:linear-gradient(180deg, var(--card), #0b0f15);border:1px solid rgba(148,163,184,.12);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
-    .grid{display:grid;gap:16px}
-    .grid.cols-3{grid-template-columns:1fr 1fr 1fr}
-    @media (max-width:900px){.grid.cols-3{grid-template-columns:1fr}}
-
-    .pill{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid rgba(148,163,184,.2);background:rgba(255,255,255,.03);font-size:12px;color:var(--muted)}
-    .pill .badge{width:7px;height:7px;border-radius:999px}
-
-    .checklist{display:grid;gap:10px;margin:10px 0 0;padding:0}
-    .checklist li{list-style:none;display:flex;gap:10px;align-items:flex-start;color:#cbd5e1}
-    .check{flex:0 0 22px;height:22px;border-radius:6px;border:1px solid rgba(148,163,184,.25);display:grid;place-items:center}
-
-    section{padding:28px 0}
-    .section-title{display:flex;align-items:center;gap:10px;margin:0 0 10px}
-    .section-title h3{margin:0;font-size:20px}
-
-    .disclaimer{font-size:12px;color:#94a3b8;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.35);padding:10px;border-radius:12px}
-
-    footer{margin-top:30px;padding:40px 0 60px;color:#9aa7bd;border-top:1px solid rgba(148,163,184,.15)}
-    .footer-grid{display:grid;gap:16px;grid-template-columns:1fr auto;align-items:center}
-    @media (max-width:700px){.footer-grid{grid-template-columns:1fr}}
-
-    /* Tiny flourish stars */
-    .stars{position:absolute;inset:0;pointer-events:none;opacity:.4}
-    .star{position:absolute;width:2px;height:2px;background:linear-gradient(180deg,#fff,#9bd);border-radius:99px;filter:blur(.2px)}
+    /* Responsive */
+    @media (max-width: 980px){ .hero-grid{grid-template-columns:1fr} .grid{grid-template-columns:1fr} .links{display:none} }
   </style>
 </head>
 <body>
-  <header>
+  <header class="appbar">
     <div class="container nav">
-      <a class="brand" href="#top" aria-label="MicroWare Home">
-        <span class="logo" aria-hidden="true"></span>
-        <h1>MicroWare <span style="font-weight:600;opacity:.7">LLC</span></h1>
-      </a>
-      <nav class="actions">
-        <a class="btn" href="#roadmap" aria-label="MicWin roadmap">Roadmap</a>
-        <a class="btn" href="#products" aria-label="MicWin products">Products</a>
-        <a class="btn" href="#legal" aria-label="Legal">Legal</a>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>MicroWare LLC</h1>
+      </div>
+      <nav class="links" aria-label="primary">
+        <a href="#features">Products</a>
+        <a href="#ai">AI</a>
+        <a href="#teasers">Teasers</a>
+        <a href="#legal">Terms</a>
       </nav>
+      <div class="cta">
+        <a class="btn" href="#teasers" aria-label="See MicWin 2‑lite teasers">Teasers</a>
+        <a class="btn btn-primary" href="MicWin/index.html" aria-label="Open MicWin">Open MicWin</a>
+      </div>
     </div>
   </header>
 
-  <main id="top" class="container">
+  <main>
     <section class="hero">
-      <div class="hero-grid">
+      <div class="container hero-grid">
         <div>
-          <span class="eyebrow"><span class="dot"></span> Introducing</span>
-          <h2 class="display">MicWin&nbsp;AI</h2>
-          <p class="lead">The MicWin AI family is evolving. <strong>MicWin&nbsp;1</strong> is available today, <strong>MicWin&nbsp;1.5</strong> is <strong>out now</strong> with coding skills and deeper reasoning, and <strong>MicWin&nbsp;2‑lite</strong> is scheduled for <strong>late night on 8/29/25</strong> with focused astrophysics updates, richer thinking options, and Video Link Testing. All versions are <strong>free to use</strong>.</p>
-          <div class="cta-row">
-            <a class="cta" href="MicWin/index.html">Open MicWin</a>
-            <a class="cta ghost" href="#products">Explore Features</a>
+          <p class="eyebrow">Introducing MicWin AI</p>
+          <h1 class="display">Simple. Fast. Professional.</h1>
+          <p class="lede">MicWin is MicroWare’s lightweight assistant family. <strong>MicWin&nbsp;1</strong> is available today (includes medical information—<em>not recommended</em> for real‑world use). <strong>MicWin&nbsp;1.5</strong> adds support for popular programming languages and expanded health knowledge; note there’s a known humorous <em>regenerate</em> quirk. And <strong>MicWin&nbsp;2‑lite</strong> lands soon with new domains and streamlined testing tools.</p>
+          <div class="cta">
+            <a class="btn btn-primary" href="MicWin/index.html">Open MicWin (Free)</a>
+            <a class="btn" href="#features">Explore features</a>
           </div>
+          <div class="promo" style="margin-top:16px">MicWin AI is <strong>free to use</strong> for non‑commercial experimentation.</div>
         </div>
-        <div>
-          <div class="card" aria-labelledby="quick-status">
-            <div class="section-title"><h3 id="quick-status">Release Status</h3></div>
-            <div class="grid">
-              <div class="pill"><span class="badge" style="background:var(--ok)"></span> MicWin 1 — Out now</div>
-              <div class="pill"><span class="badge" style="background:var(--ok)"></span> MicWin 1.5 — Out now</div>
-              <div class="pill"><span class="badge" style="background:var(--brand-2)"></span> MicWin 2‑lite — Releases late night 8/29/25</div>
-            </div>
-            <ul class="checklist">
-              <li><span class="check">✓</span> Free to use across MicWin family</li>
-              <li><span class="check">✓</span> One use case for <strong>PS6</strong> with MicWin&nbsp;1</li>
-              <li><span class="check">✓</span> One use case for <strong>AI</strong> with MicWin&nbsp;1.5</li>
-              <li><span class="check">✓</span> <strong>Video Link Testing</strong> arriving with MicWin&nbsp;2‑lite</li>
+        <aside>
+          <h3 style="margin-top:0">MicWin 2‑lite Release</h3>
+          <div class="countdown" id="countdown" role="timer" aria-live="polite">
+            <div class="timebox"><div class="num" id="d">–</div><div class="lab">Days</div></div>
+            <div class="timebox"><div class="num" id="h">–</div><div class="lab">Hours</div></div>
+            <div class="timebox"><div class="num" id="m">–</div><div class="lab">Minutes</div></div>
+            <div class="timebox"><div class="num" id="s">–</div><div class="lab">Seconds</div></div>
+          </div>
+          <div class="date-note">Releases <strong>8/28/25</strong> at <strong>7:00&nbsp;PM&nbsp;EST</strong>.</div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <h3>At a glance</h3>
+        <div class="grid">
+          <div class="card">
+            <div class="tag">Now shipping</div>
+            <h4>MicWin 1</h4>
+            <ul>
+              <li class="list-title">Foundation model for labs and learning.</li>
+              <li>Ships with curated <strong>medical information</strong> to enable <em>offline testing, red‑teaming, and UI prototyping</em>.</li>
+              <li><strong>Not recommended</strong> for diagnosis, treatment, or clinical workflows.</li>
+              <li>Includes a <strong>PS6 single‑use profile</strong> for console demos and kiosk trials.</li>
+              <li><strong>Known quirk:</strong> occasional playful behavior if you press <em>Regenerate</em>; more tame than 1.5.</li>
             </ul>
+            <div class="note">Best for: classrooms, hackdays, internal sandboxes.</div>
+          </div>
+          <div class="card">
+            <div class="tag">Enhanced</div>
+            <h4>MicWin 1.5</h4>
+            <ul>
+              <li class="list-title">Developer‑ready with a sense of humor.</li>
+              <li><strong>Programming language support</strong> for common stacks (JS/TS, Python, HTML/CSS, and more) to help scaffold, explain, and refactor code.</li>
+              <li><strong>Expanded health knowledge</strong> for testing health‑related UIs and flows (still <em>not recommended</em> for real‑world medical use).</li>
+              <li><strong>Known quirk:</strong> if the user presses <em>Regenerate</em>, responses can get a bit weird—by design, for stress‑testing UX.</li>
+            </ul>
+            <div class="note">Best for: creators and developers who want language‑aware assistance without extra complexity.</div>
+          </div>
+          <div class="card">
+            <div class="tag">Next</div>
+            <h4>MicWin 2‑lite</h4>
+            <ul>
+              <li class="list-title">Focused domains. Lean runtime.</li>
+              <li><strong>Video testing</strong> utilities for trying prompt‑to‑script and narration experiments.</li>
+              <li><strong>Astrophysics</strong> sandbox for conceptual Q&A and unit conversions.</li>
+              <li><strong>Health questions</strong> preview mode for UI prototyping (<em>still not for medical use</em>).</li>
+              <li><strong>Social meta</strong> helpers for caption/draft ideation and trend summaries.</li>
+            </ul>
+            <div class="note">Releasing 8/28/25 @ 7:00 PM EST • Ideal for: production‑adjacent demos and lean web apps.</div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="products">
-      <div class="section-title">
-        <h3>MicWin Product Line</h3>
-      </div>
-      <div class="grid cols-3">
-        <article class="card" aria-labelledby="mw1">
-          <h4 id="mw1" style="margin:0 0 8px">MicWin 1</h4>
-          <p style="margin:0 0 10px;color:var(--muted)">Available now • Early medical information • Experimental PS6 use</p>
-          <ul class="checklist">
-            <li><span class="check">★</span> Provides basic medical information.</li>
-            <li><span class="check">★</span> <strong>Not recommended</strong> for real‑world medical use.</li>
-            <li><span class="check">★</span> Includes a single, experimental <strong>PS6</strong> use case.</li>
-          </ul>
-          <div class="disclaimer" role="note">MicWin 1 may contain inaccuracies. It is <strong>not a medical device</strong> and is not a substitute for professional advice.</div>
-        </article>
-
-        <article class="card" aria-labelledby="mw15">
-          <h4 id="mw15" style="margin:0 0 8px">MicWin 1.5</h4>
-          <p style="margin:0 0 10px;color:var(--muted)">Available now • Coding features • More medical info • Deeper thinking</p>
-          <ul class="checklist">
-            <li><span class="check">★</span> Adds coding features for programmers (generate, explain, and refactor code).</li>
-            <li><span class="check">★</span> More medical information with better reasoning.</li>
-            <li><span class="check">★</span> Recommended more broadly than 1.0, but <strong>not fully reliable</strong> yet.</li>
-            <li><span class="check">★</span> Includes a single, exploratory <strong>AI</strong> use case.</li>
-          </ul>
-          <div class="disclaimer" role="note">Even with improvements, double‑check important outputs, especially medical or technical content.</div>
-        </article>
-
-        <article class="card" aria-labelledby="mw2l">
-          <h4 id="mw2l" style="margin:0 0 8px">MicWin 2‑lite</h4>
-          <p style="margin:0 0 10px;color:var(--muted)">Release: <strong>Late night on 8/29/25</strong> • Focused feature set</p>
-          <ul class="checklist">
-            <li><span class="check">★</span> Targeted knowledge updates for <strong>astrophysics</strong>.</li>
-            <li><span class="check">★</span> More options for <strong>thinking</strong> styles and strategies.</li>
-            <li><span class="check">★</span> Built‑in <strong>Video Link Testing</strong> (evaluate linked clips).</li>
-          </ul>
-          <div class="pill" style="margin-top:8px"><span class="badge" style="background:var(--brand)"></span> On schedule for late 8/29/25</div>
-        </article>
+    <section id="ai">
+      <div class="container">
+        <h3>Important note on MicWin 1</h3>
+        <div class="card">
+          MicWin 1 surfaces <strong>medical information</strong>. This content is for <em>testing and demonstration</em> only and is <strong>not recommended</strong> for medical guidance or treatment. Always consult licensed professionals for health decisions.
+        </div>
       </div>
     </section>
 
-    <section id="roadmap">
-      <div class="section-title">
-        <h3>Roadmap Highlights</h3>
-      </div>
-      <div class="grid">
-        <div class="card">
-          <ul class="checklist">
-            <li><span class="check">✓</span> <strong>Today:</strong> MicWin 1 available with free access and an experimental PS6 use case.</li>
-            <li><span class="check">✓</span> <strong>Now:</strong> MicWin 1.5 released with coding features, more medical info, and improved thinking.</li>
-            <li><span class="check">★</span> <strong>Next:</strong> MicWin 2‑lite releases <strong>late night on 8/29/25</strong> with astrophysics updates, thinking controls, and Video Link Testing.</li>
-          </ul>
+    <section id="teasers">
+      <div class="container">
+        <h3>MicWin 2‑lite • Teasers</h3>
+        <div class="gallery">
+          <figure class="shot">
+            <img src="2-lite-T1.png" alt="MicWin 2‑lite Teaser 1"/>
+            <figcaption class="ribbon">T1</figcaption>
+          </figure>
+          <figure class="shot">
+            <img src="2-lite-T2.png" alt="MicWin 2‑lite Teaser 2"/>
+            <figcaption class="ribbon">T2</figcaption>
+          </figure>
+          <figure class="shot">
+            <img src="2-lite-T3.png" alt="MicWin 2‑lite Teaser 3"/>
+            <figcaption class="ribbon">T3</figcaption>
+          </figure>
         </div>
       </div>
     </section>
 
     <section id="legal">
-      <div class="section-title">
-        <h3>Important Notes</h3>
-      </div>
-      <div class="card">
-        <p style="margin:0 0 10px;color:var(--muted)">MicWin AI is provided for informational and educational purposes only. It does <strong>not</strong> offer medical, legal, or professional advice and should not be used for diagnosis, treatment, or safety‑critical decisions. Always verify results and consult qualified professionals.</p>
-        <p class="disclaimer">By using MicWin AI, you agree that usage is at your own discretion and risk. MicroWare LLC disclaims responsibility for outcomes based on AI suggestions.</p>
-      </div>
-    </section>
-
-    <section>
-      <div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
-        <div>
-          <strong>MicWin is free to use.</strong>
-          <div style="color:var(--muted);font-size:14px">No sign‑up required. Click below to launch.</div>
+      <div class="container">
+        <div class="card" style="display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap">
+          <div>
+            <strong>Free to use.</strong> MicWin AI (all current tiers, including 2‑lite upon release) is free for non‑commercial experimentation under MicroWare Preview Terms.
+          </div>
+          <div class="cta">
+            <a class="btn" href="#">Preview Terms</a>
+            <a class="btn btn-primary" href="MicWin/index.html">Launch MicWin</a>
+          </div>
         </div>
-        <a class="cta" href="MicWin/index.html" aria-label="Launch MicWin">Launch MicWin</a>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="container footer-grid">
-      <div>© <span id="y"></span> MicroWare LLC • All rights reserved</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <a class="btn" href="#top">Back to top</a>
-        <a class="btn" href="#legal">Terms & Notes</a>
-      </div>
-    </div>
+    <div class="container">© <span id="yr"></span> MicroWare LLC • All rights reserved</div>
   </footer>
 
-  <!-- Decorative stars -->
-  <div class="stars" aria-hidden="true" id="stars"></div>
-
   <script>
-    // Year in footer
-    document.getElementById('y').textContent = new Date().getFullYear();
+    const $ = (id)=>document.getElementById(id);
+    const pad = (n)=>n.toString().padStart(2,'0');
+    (function(){ $('yr').textContent = new Date().getFullYear(); })();
 
-    // Smooth scroll for in-page links
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', e => {
-        const id = a.getAttribute('href').slice(1);
-        const el = document.getElementById(id);
-        if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'}); }
-      });
-    });
-
-    // Tiny drifting stars for a subtle tech vibe
-    const starField = document.getElementById('stars');
-    const STAR_COUNT = 60;
-    const stars = [];
-    function spawn(){
-      for(let i=0;i<STAR_COUNT;i++){
-        const s = document.createElement('div');
-        s.className = 'star';
-        s.style.left = Math.random()*100 + 'vw';
-        s.style.top = Math.random()*120 + 'vh';
-        s.style.opacity = (0.3 + Math.random()*0.7).toFixed(2);
-        s.dataset.vx = (Math.random()*.05 + .02) * (Math.random()>.5?1:-1);
-        s.dataset.vy = (Math.random()*.05 + .02) * (Math.random()>.5?1:-1);
-        starField.appendChild(s);
-        stars.push(s);
-      }
-    }
+    // Countdown to 7:00 PM Eastern on 2025-08-28 (EDT = UTC-4; using 23:00 UTC)
+    const targetUTCms = Date.UTC(2025,7,28,23,0,0); // months 0-indexed
     function tick(){
-      for(const s of stars){
-        let x = parseFloat(s.style.left);
-        let y = parseFloat(s.style.top);
-        x += parseFloat(s.dataset.vx);
-        y += parseFloat(s.dataset.vy);
-        if(x < -2) x = 102; if(x > 102) x = -2;
-        if(y < -2) y = 102; if(y > 130) y = -2;
-        s.style.left = x + 'vw';
-        s.style.top = y + 'vh';
+      const now = Date.now();
+      const diff = Math.max(0, targetUTCms - now);
+      const sec = Math.floor(diff/1000);
+      const d = Math.floor(sec/86400);
+      const h = Math.floor((sec%86400)/3600);
+      const m = Math.floor((sec%3600)/60);
+      const s = sec%60;
+      const set=(id,val)=>{ const el=document.getElementById(id); if(el) el.textContent = val; };
+      set('d', d); set('h', pad(h)); set('m', pad(m)); set('s', pad(s));
+      if(diff===0){
+        const dn = document.querySelector('.date-note');
+        if(dn) dn.innerHTML = '<strong>MicWin 2‑lite is now live.</strong> Refresh to check availability.';
       }
-      requestAnimationFrame(tick);
     }
-    spawn();
-    requestAnimationFrame(tick);
+    tick();
+    setInterval(tick,1000);
   </script>
 </body>
 </html>
