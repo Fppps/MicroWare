@@ -18,7 +18,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-  <link rel="shortcut icon" href="Logo/Logo.png" type="image/png">
   <script>window.hljs && hljs.configure({languages: ['javascript','html','css','xml','json','bash','typescript','plaintext']});</script>
 
   <style>
@@ -75,7 +74,7 @@
       <div class="flex items-center gap-3">
         <img src="./Logo/Logo.png" alt="MicWin Logo" class="w-9 h-9 rounded" />
         <div class="flex flex-col">
-          <span class="text-sm font-bold">MicWin</span>
+          <span class="text-sm font-bold">Girare AI</span>
           <span class="text-xs text-slate-500 dark:text-slate-400">Your multi-model workspace</span>
         </div>
       </div>
@@ -118,6 +117,7 @@
     <div class="p-3 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400">
       v1 • Keeping it simple<br/>
       v1.5 • Reasoning & code<br/>
+      2‑Lite • Expanded knowledge & strategies
     </div>
   </aside>
 
@@ -135,7 +135,7 @@
             <div class="surface rounded-xl px-3 py-1.5 flex items-center gap-2 elevate">
               <img src="./Logo/Logo.png" alt="" class="w-7 h-7 rounded">
               <div class="text-sm">
-                <div id="header-title" class="font-semibold leading-5">MicWin 1</div>
+                <div id="header-title" class="font-semibold leading-5">Girare AI 1</div>
                 <div class="text-[11px] text-slate-500 dark:text-slate-400 leading-4">Conversational AI workspace</div>
               </div>
             </div>
@@ -144,13 +144,13 @@
           <!-- Center: model switcher -->
           <div class="relative">
             <button class="surface rounded-full px-4 py-2 text-sm font-medium flex items-center gap-2 hover:bg-white/70 dark:hover:bg-slate-800/70 elevate">
-              <span id="selected-model-name">MicWin 1</span>
+              <span id="selected-model-name">Girare AI 1</span>
               <span class="material-symbols-outlined text-base">expand_more</span>
             </button>
             <!-- Menu -->
             <div class="absolute right-0 mt-2 w-56 surface rounded-xl p-1 shadow-xl hidden group-focus-within:block" id="model-menu">
-              <a href="#" data-model="MicWin 1" class="block px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">MicWin 1</a>
-              <a href="#" data-model="MicWin 1.5" class="block px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">MicWin 1.5</a>
+              <a href="#" data-model="MicWin 1" class="block px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">Girare AI 1</a>
+              <a href="#" data-model="MicWin 1.5" class="block px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">Girare AI 1.5</a>
             </div>
           </div>
 
@@ -175,9 +175,9 @@
         <!-- MicWin 2‑Lite gradient WELCOME container (hidden by default; shown when 2‑Lite is active) -->
         <section id="twolite-hero" class="hidden twolite-gradient text-white rounded-2xl p-6 sm:p-8 mb-4 elevate">
           <div class="flex items-start gap-4">
-            <img src="./Logo/Logo.png" class="w-12 h-12 rounded-lg shadow" alt="MicWin logo"/>
+            <img src="./Logo/Logo.png" class="w-12 h-12 rounded-lg" alt="MicWin logo"/>
             <div>
-              <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Welcome to MicWin 2‑Lite</h2>
+              <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Welcome to Girare AI 2‑Lite</h2>
               <p class="mt-1 text-white/90 max-w-3xl">Expanded knowledge in astrophysics, health (general info), social media, and games. Multiple thinking strategies, professional responses, and built‑in video link testing. Type to focus — the background turns white while you write.</p>
               <ul class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
                 <li class="flex items-center gap-2"><span class="material-symbols-outlined text-base">auto_awesome</span><span>Strategies: fast, deliberate, planner‑coder, compare, socratic, critic</span></li>
@@ -194,7 +194,7 @@
           <div id="chat-container" class="relative px-1 sm:px-2 space-y-4">
             <!-- Welcome (kept for script.js) -->
             <div id="welcome-screen" class="relative flex flex-col items-center justify-center h-[60vh] text-center">
-              <img src="./Logo/Logo.png" alt="MicWin logo" class="w-[120px] h-auto mb-6 rounded-xl shadow-sm" />
+              <img src="./Logo/Logo.png" alt="MicWin logo" class="w-[120px] h-auto mb-6 rounded-xl"/>
               <h1 id="welcome-title" class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2">How can I help you today?</h1>
               <p id="welcome-subtitle" class="text-slate-600 dark:text-slate-400 mb-8">Ask me anything, or try a quick suggestion.</p>
 
@@ -280,5 +280,3 @@
   </script>
 </body>
 </html>
-
-
