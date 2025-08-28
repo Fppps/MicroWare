@@ -1,283 +1,389 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MicWin • Chat</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GiroWare LLC — Introducing Girare AI</title>
+<meta name="description" content="GiroWare LLC — Introducing Girare AI: modern AI lineup with clear product tiers, countdowns, and clean design." />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0c0f;--card:#101218;--text:#e9eef6;--muted:#a6b0c3;
+    --accent:#55a6ff;--accent-2:#7b5cff;--glass:rgba(255,255,255,.06);--ring:rgba(85,166,255,.35);
+    --ok:#30d158;--warn:#ffb020;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);
+    background:
+      radial-gradient(1200px 800px at 10% -10%, #1a1f2e 0%, transparent 60%),
+      radial-gradient(1000px 700px at 110% 10%, #121c2a 0%, transparent 60%),
+      linear-gradient(180deg, #0a0c12 0%, #0b0c0f 60%, #0b0c0f 100%);
+  }
+  a{color:inherit;text-decoration:none}
+  .container{max-width:1200px;margin:0 auto;padding:24px 20px 64px}
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  /* Nav */
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;position:sticky;top:0;backdrop-filter:saturate(140%) blur(10px);
+    background:linear-gradient(180deg, rgba(10,12,18,.85), rgba(10,12,18,.35));border-bottom:1px solid rgba(255,255,255,.06);z-index:5}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px}
+  .logo{width:28px;height:28px;border-radius:9px;background:conic-gradient(from 210deg,#66d1ff,#b896ff,#ffe58d,#66d1ff);box-shadow:0 0 0 2px rgba(255,255,255,.06),0 8px 24px rgba(123,92,255,.35)}
+  .navlinks{display:flex;gap:18px}
+  .pill{padding:8px 14px;border-radius:999px;background:var(--glass);border:1px solid rgba(255,255,255,.06);transition:all .2s}
+  .pill:hover{border-color:var(--ring);box-shadow:0 0 0 6px rgba(85,166,255,.07)}
+  .cta{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:0}
 
-  <!-- Inter font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  /* Hero */
+  .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;margin:56px 0 28px}
+  .hero h1{font-size:clamp(32px,5vw,64px);line-height:1.05;margin:0 0 14px;letter-spacing:-.02em;background:linear-gradient(180deg,#fff,#dfe7ff 60%,#b8c7ff);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{color:var(--muted);font-size:clamp(16px,2.2vw,20px);max-width:52ch}
+  .hero-card{border:1px solid rgba(255,255,255,.06);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
+    border-radius:20px;padding:22px;box-shadow:0 15px 60px rgba(0,0,0,.35)}
+  .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.10);color:var(--muted);font-size:12px;letter-spacing:.3px}
+  .grid{display:grid;gap:18px}
 
-  <!-- Material Symbols -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1" />
+  /* Cards */
+  .cards{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin-top:22px}
+  .card{grid-column:span 6;background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:20px;transition:.2s}
+  .card:hover{transform:translateY(-4px);border-color:var(--ring);box-shadow:0 12px 30px rgba(85,166,255,.12)}
+  .card h3{margin:6px 0 8px;font-size:22px}
+  .card p{margin:0;color:var(--muted);line-height:1.6}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+  .chip{font-size:12px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:#d8e4ff;letter-spacing:.2px}
+  .warn{color:#ffd9a0;border-color:rgba(255,183,0,.35);background:rgba(255,183,0,.08)}
+  .ok{color:#c6ffd3;border-color:rgba(48,209,88,.35);background:rgba(48,209,88,.08)}
+  .beta{color:#d7caff;border-color:rgba(123,92,255,.45);background:rgba(123,92,255,.10)}
+  .tight{margin-top:6px}
 
-  <!-- Highlight.js (matching script.js usage) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-  <script>window.hljs && hljs.configure({languages: ['javascript','html','css','xml','json','bash','typescript','plaintext']});</script>
+  /* Countdown */
+  .countdown{display:flex;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap}
+  .cd-box{min-width:78px;text-align:center;padding:10px 8px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08)}
+  .cd-box .num{font-size:22px;font-weight:700;line-height:1}
+  .cd-box .lbl{font-size:10px;color:var(--muted);letter-spacing:.3px;margin-top:6px}
 
-  <style>
-    :root { --ring: #3b82f6; --card: rgba(255,255,255,.9); --border: rgba(15,23,42,.06); }
-    html { color-scheme: light dark; }
-    body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  /* Peace countdown theme */
+  .peace{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.10);
+    background:radial-gradient(600px 300px at -10% -20%, rgba(255,255,255,.2), transparent 60%),
+               linear-gradient(135deg, rgba(161,255,214,.18), rgba(184,231,255,.18), rgba(255,230,168,.18))}
+  .peace::after{content:"☮";position:absolute;right:-6px;bottom:-22px;font-size:220px;opacity:.06}
+  .peace .cd-box{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.22)}
+  .peace-title{display:flex;align-items:center;gap:10px;margin:10px 0 2px;font-weight:700;letter-spacing:.2px}
+  .olive{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #eafff5, #9de6bf 60%, #5cbf8a);box-shadow:0 0 0 2px rgba(255,255,255,.18)}
 
-    /* Polished app surface */
-    .surface { background: var(--card); border: 1px solid var(--border); backdrop-filter: blur(8px); }
-    .dark .surface { background: rgba(2, 6, 23, 0.7); border-color: rgba(148, 163, 184, 0.15); }
+  /* Sections */
+  .section{margin:48px 0 18px}
+  .section h2{font-size:clamp(22px,3.2vw,34px);margin:0 0 10px;letter-spacing:-.01em}
+  .sub{color:var(--muted);max-width:70ch}
 
-    /* Gradient **container** for MicWin 2‑Lite (not on body) */
-    .twolite-gradient { background: linear-gradient(135deg, #0ea5e9, #8b5cf6, #22c55e); background-size: 400% 400%; animation: gradientShift 18s ease infinite; }
-    @keyframes gradientShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-    /* While typing within 2‑Lite, flip the container to white */
-    #twolite-hero.typing { background: #ffffff !important; color: #0f172a !important; animation: none !important; }
+  /* Pricing */
+  .pricing{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin-top:18px}
+  .plan{grid-column:span 12;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:22px}
+  .price-tag{display:flex;align-items:baseline;gap:10px}
+  .price-main{font-size:44px;font-weight:800;letter-spacing:-.02em}
+  .price-note{color:var(--muted)}
+  .tick{display:flex;gap:10px;align-items:flex-start;margin-top:10px}
+  .tick i{font-style:normal;width:22px;height:22px;display:inline-grid;place-items:center;border-radius:999px;background:rgba(48,209,88,.15);border:1px solid rgba(48,209,88,.35)}
 
-    /* Quick hover polish */
-    .toolbar-btn { transition: transform .12s ease, opacity .12s ease; }
-    .toolbar-btn:hover { transform: translateY(-1px); opacity: .92; }
+  /* Footer */
+  footer{margin-top:56px;padding:28px 0;color:var(--muted);font-size:12px;border-top:1px solid rgba(255,255,255,.08)}
 
-    /* Sidebar drawer transitions (mobile) */
-    #sidebar { transition: transform .2s ease; }
-    #sidebar-backdrop { transition: opacity .2s ease; }
-
-    /* Small elevation for cards */
-    .elevate { box-shadow: 0 8px 30px rgba(2, 6, 23, 0.08); }
-    .dark .elevate { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35); }
-
-    /* Subtle separators in header */
-    .hairline { height: 1px; background: rgba(15,23,42,.08); }
-    .dark .hairline { background: rgba(148,163,184,.15); }
-
-    /* Chat area min-height */
-    #chat-container { min-height: 60vh; }
-
-    /* Improve input ring */
-    .focus-ring:focus { outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,.35); }
-
-    /* Hide scrollbars on modern UIs (optional) */
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-  </style>
+  /* Responsive */
+  @media (max-width: 960px){
+    .hero{grid-template-columns:1fr;gap:18px}
+    .card{grid-column:span 12}
+  }
+</style>
 </head>
+<body>
+  <div class="container">
+    <!-- NAV -->
+    <div class="nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <span>GiroWare LLC</span>
+      </div>
+      <div class="navlinks">
+        <a class="pill" href="#intro">Overview</a>
+        <a class="pill" href="#lineup">AI Lineup</a>
+        <a class="pill" href="#pricing">Pricing & Access</a>
+        <a class="pill" href="#roadmap">Roadmap</a>
+        <a class="pill cta" href="#get-started">Get Started</a>
+      </div>
+    </div>
 
-<body class="bg-slate-50 text-slate-800 min-h-screen flex">
-  <!-- Mobile overlay for drawer -->
-  <div id="sidebar-backdrop" class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none md:hidden z-30"></div>
-
-  <!-- Sidebar -->
-  <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-80 md:w-72 translate-x-[-100%] md:translate-x-0 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col">
-    <!-- Brand -->
-    <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <img src="./Logo/Logo.png" alt="MicWin Logo" class="w-9 h-9 rounded" />
-        <div class="flex flex-col">
-          <span class="text-sm font-bold">Girare AI</span>
-          <span class="text-xs text-slate-500 dark:text-slate-400">Your multi-model workspace</span>
+    <!-- HERO -->
+    <section id="intro" class="hero">
+      <div>
+        <h1>Introducing Girare AI</h1>
+        <p class="lede">
+          Thoughtful intelligence designed the GiroWare way—clean, capable, and candid about limits.
+          Explore the Girare AI lineup below, from the experimental <strong>Girare AI&nbsp;1</strong>
+          to the upcoming <strong>Girare AI&nbsp;2</strong> peace-day release.
+        </p>
+        <div class="grid" style="margin-top:18px">
+          <div class="badge"><span aria-hidden="true">●</span> Minimal, product-first design</div>
+          <div class="badge"><span aria-hidden="true">●</span> Web • Desktop • “one use for PS6”</div>
+          <div class="badge"><span aria-hidden="true">●</span> Clear capability descriptions</div>
         </div>
       </div>
-      <button id="menu-btn" class="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-800 toolbar-btn">
-        <span class="material-symbols-outlined">close</span>
-      </button>
-    </div>
 
-    <!-- Controls -->
-    <div class="p-3 flex items-center gap-2">
-      <button id="settings-btn" class="flex-1 surface rounded-xl px-3 py-2 text-sm hover:bg-white/70 dark:hover:bg-slate-800/70 elevate toolbar-btn">
-        <span class="material-symbols-outlined align-[-3px] mr-1">tune</span>
-        Settings
-      </button>
-      <button id="dark-mode-toggle" class="w-10 h-10 surface rounded-xl grid place-items-center elevate toolbar-btn" title="Toggle theme">
-        <span id="sun-icon" class="material-symbols-outlined">light_mode</span>
-        <span id="moon-icon" class="material-symbols-outlined hidden">dark_mode</span>
-      </button>
-    </div>
+      <div class="hero-card">
+        <div class="badge">Now showcasing</div>
+        <h3 style="margin:10px 0 6px">A family of models, one design system</h3>
+        <p style="margin:0;color:var(--muted)">
+          Medical-related outputs are for informational purposes only and not a substitute for professional advice.
+        </p>
+        <div class="grid" style="margin-top:14px">
+          <div class="meta">
+            <span class="chip ok">Transparent limits</span>
+            <span class="chip">Calm UI</span>
+            <span class="chip beta">Iterating fast</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <!-- Settings dropdown -->
-    <div id="settings-menu" class="hidden mx-3 mb-2 surface rounded-xl p-3 text-sm elevate">
-      <div class="flex items-center justify-between">
+    <!-- LINEUP -->
+    <section id="lineup" class="section">
+      <h2>Girare AI Lineup</h2>
+      <p class="sub">Clear, concise cards with realistic capability notes and rollout plans.</p>
+
+      <div class="cards">
+        <!-- Girare AI 1 -->
+        <article class="card">
+          <div class="badge">Experimental</div>
+          <h3>Girare AI 1</h3>
+          <p>
+            A first-generation model that can surface <strong>general medical information</strong> and a few niche utilities—including
+            <em>one use for PS6</em> integrations. <strong>Not recommended for medical decisions</strong>.
+          </p>
+          <ul class="tight" style="margin-top:10px;color:var(--muted);line-height:1.7">
+            <li>Reads common symptoms and conditions at an overview level</li>
+            <li>Early tool hooks for a single PS6-related workflow</li>
+            <li>Known quirk: on <em>regenerate</em>, responses can occasionally get weird</li>
+          </ul>
+          <div class="meta">
+            <span class="chip warn">Not for medical use</span>
+            <span class="chip">Overview search</span>
+            <span class="chip">Basic reasoning</span>
+          </div>
+        </article>
+
+        <!-- Girare AI 1.5 -->
+        <article class="card">
+          <div class="badge">Stability pass</div>
+          <h3>Girare AI 1.5</h3>
+          <p>
+            Adds targeted developer features with lightweight health information guardrails. Focused on practical coding help.
+          </p>
+          <ul class="tight" style="margin-top:10px;color:var(--muted);line-height:1.7">
+            <li>Language support: <strong>HTML, CSS, JavaScript, Node.js</strong></li>
+            <li>Better grounding and fewer tangents in technical prompts</li>
+            <li>Health info replies are more conservative and concise</li>
+            <li>“Regenerate” bug is still present but more tame than in v1</li>
+          </ul>
+          <div class="meta">
+            <span class="chip">Dev helper</span>
+            <span class="chip">Guardrailed health info</span>
+            <span class="chip beta">Minor quirks remain</span>
+          </div>
+        </article>
+
+        <!-- Girare AI 2-lite -->
+        <article class="card">
+          <div class="badge">Upcoming</div>
+          <h3>Girare AI 2-lite</h3>
+          <p>
+            A nimble tester with specialty domains: <strong>video testing</strong>, <strong>astrophysics</strong>, <strong>health questions</strong>, and <strong>social meta</strong>.
+          </p>
+          <ul class="tight" style="margin-top:10px;color:var(--muted);line-height:1.7">
+            <li>Lightweight video-Q&A experiments</li>
+            <li>Astrophysics problem-solving and unit sanity checks</li>
+            <li>Health questions answered cautiously</li>
+            <li>Social/meta conversations for content planning</li>
+          </ul>
+          <div class="meta">
+            <span class="chip">Specialist tester</span>
+            <span class="chip ok">Faster iteration</span>
+            <span class="chip">Normal countdown</span>
+          </div>
+          <div class="countdown" data-deadline="2025-08-28T20:00:00">
+            <div class="cd-box"><div class="num" data-days>--</div><div class="lbl">DAYS</div></div>
+            <div class="cd-box"><div class="num" data-hours>--</div><div class="lbl">HOURS</div></div>
+            <div class="cd-box"><div class="num" data-mins>--</div><div class="lbl">MIN</div></div>
+            <div class="cd-box"><div class="num" data-secs>--</div><div class="lbl">SEC</div></div>
+          </div>
+          <p class="sub" style="margin-top:8px;font-size:12px">Plans date: <strong>Aug 28, 2025 — 8:00 PM</strong></p>
+        </article>
+
+        <!-- Girare AI 2 -->
+        <article class="card peace">
+          <div class="badge">Peace-day special</div>
+          <div class="peace-title"><span class="olive" aria-hidden="true"></span>Girare AI 2</div>
+          <p>
+            Built-in <strong>self memory</strong>, optional <strong>history</strong>, <strong>different styles of talking</strong> (brief, narrative, technical),
+            and <strong>full video link showing</strong> for questions and references.
+          </p>
+          <ul class="tight" style="margin-top:10px;color:var(--muted);line-height:1.7">
+            <li>Personalizable tone & conversation modes</li>
+            <li>Privacy-aware memory you control</li>
+            <li>Richer answers with inline video previews</li>
+            <li>Safer defaults for health & sensitive topics</li>
+          </ul>
+          <div class="meta">
+            <span class="chip beta">In development</span>
+            <span class="chip">Tone control</span>
+            <span class="chip">Video link previews</span>
+          </div>
+          <div class="countdown" data-deadline="2025-09-21T00:00:00">
+            <div class="cd-box"><div class="num" data-days>--</div><div class="lbl">DAYS</div></div>
+            <div class="cd-box"><div class="num" data-hours>--</div><div class="lbl">HOURS</div></div>
+            <div class="cd-box"><div class="num" data-mins>--</div><div class="lbl">MIN</div></div>
+            <div class="cd-box"><div class="num" data-secs>--</div><div class="lbl">SEC</div></div>
+          </div>
+          <p class="sub" style="margin-top:8px;font-size:12px">Release target: <strong>September 21, 2025</strong> — The International Day of Peace</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- PRICING & ACCESS -->
+    <section id="pricing" class="section">
+      <h2>Pricing & Access</h2>
+      <p class="sub">Simple, transparent access while we iterate. Enterprise options will be announced later.</p>
+
+      <div class="pricing">
+        <article class="plan">
+          <div class="badge">Current</div>
+          <div class="price-tag" style="margin-top:10px">
+            <div class="price-main">$0</div>
+            <div class="price-note">Free for all users</div>
+          </div>
+          <div class="tick"><i>✓</i><div>Use <strong>Girare AI 1</strong> and <strong>1.5</strong> at no cost</div></div>
+          <div class="tick"><i>✓</i><div><strong>Girare AI 2-lite</strong> free testing starting <strong>Aug 28, 2025, 8:00 PM</strong></div></div>
+          <div class="tick"><i>✓</i><div><strong>Girare AI 2</strong> planned release on <strong>Sep 21, 2025</strong> — no pricing announced</div></div>
+          <div class="tick"><i>✓</i><div>Fair-use limits may apply to prevent abuse</div></div>
+          <div class="tick"><i>✓</i><div>Medical information is <strong>informational only</strong> — not a substitute for professional advice</div></div>
+
+          <div class="meta" style="margin-top:14px">
+            <span class="chip ok">Free access</span>
+            <span class="chip">No credit card required</span>
+            <span class="chip">Enterprise: TBD</span>
+          </div>
+        </article>
+
+        <article class="plan" style="grid-column:span 12">
+          <div class="badge">FAQ</div>
+          <details style="margin-top:12px">
+            <summary><strong>Will it stay free?</strong></summary>
+            <p class="sub">We intend to keep a generous free tier while we learn from usage. If paid tiers arrive, the free tier will still cover core features.</p>
+          </details>
+          <details>
+            <summary><strong>Any usage limits?</strong></summary>
+            <p class="sub">Reasonable rate limits may apply (to keep the lights on and service stable). We’ll publish specifics with 2-lite.</p>
+          </details>
+          <details>
+            <summary><strong>Can I use medical outputs?</strong></summary>
+            <p class="sub">They’re strictly educational. Always consult a licensed professional before making health decisions.</p>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section id="roadmap" class="section">
+      <h2>Roadmap & Principles</h2>
+      <p class="sub">We ship in steps. Each release expands capability while keeping trust and clarity front-and-center.</p>
+      <div class="cards">
+        <article class="card" style="grid-column:span 12">
+          <h3>Plain-English, disciplined descriptions</h3>
+          <p>
+            Every Girare AI card states what it does—and what it doesn’t. Health content remains strictly informational.
+            The “regenerate” quirk persists in 1.x lines and is disclosed up front to avoid surprises.
+          </p>
+          <div class="meta">
+            <span class="chip ok">Transparency</span>
+            <span class="chip">Safety by default</span>
+            <span class="chip">Iterative delivery</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="get-started" class="section">
+      <h2>Get Started</h2>
+      <p class="sub">Try Girare AI&nbsp;1.x free today—and watch the countdowns for 2-lite and the peace-day release of 2.</p>
+      <div class="grid" style="grid-template-columns:1fr auto;align-items:center;gap:16px">
         <div>
-          <div class="font-semibold">Session</div>
-          <div class="text-xs text-slate-500 dark:text-slate-400">Clear conversation history</div>
+          <div class="badge">Contact</div>
+          <p style="margin:8px 0 0;color:var(--muted)">Questions, pilots, or research collabs.</p>
         </div>
-        <button id="clear-history-btn" class="px-3 py-1.5 rounded-lg bg-slate-900 text-white dark:bg-slate-700 hover:opacity-90">Clear History</button>
+        <a class="pill cta" href="#" onclick="alert('Contact form coming soon!')" role="button" aria-label="Contact GiroWare">Contact GiroWare</a>
       </div>
-    </div>
+    </section>
 
-    <!-- History -->
-    <div class="px-4 pt-3">
-      <h2 class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">History</h2>
-    </div>
-    <div id="history-container" class="flex-1 px-3 py-2 overflow-y-auto no-scrollbar">
-      <div class="p-3 text-sm text-gray-400 dark:text-gray-500 text-center">No history yet.</div>
-    </div>
-
-    <div class="p-3 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400">
-      v1 • Keeping it simple<br/>
-      v1.5 • Reasoning & code<br/>
-      2‑Lite • Expanded knowledge & strategies
-    </div>
-  </aside>
-
-  <!-- Main column -->
-  <div class="flex-1 flex flex-col min-w-0">
-    <!-- Top bar -->
-    <header class="sticky top-0 z-20 backdrop-blur supports-[backdrop-filter]:bg-white/70 bg-white dark:bg-slate-900 dark:supports-[backdrop-filter]:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800">
-      <div class="max-w-6xl mx-auto px-3 sm:px-5 py-2">
-        <div class="flex items-center justify-between gap-3">
-          <!-- Left: mobile menu + title -->
-          <div class="flex items-center gap-2">
-            <button id="menu-btn" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 toolbar-btn" title="Open sidebar">
-              <span class="material-symbols-outlined">menu</span>
-            </button>
-            <div class="surface rounded-xl px-3 py-1.5 flex items-center gap-2 elevate">
-              <img src="./Logo/Logo.png" alt="" class="w-7 h-7 rounded">
-              <div class="text-sm">
-                <div id="header-title" class="font-semibold leading-5">Girare AI 1</div>
-                <div class="text-[11px] text-slate-500 dark:text-slate-400 leading-4">Conversational AI workspace</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Center: model switcher -->
-          <div class="relative">
-            <button class="surface rounded-full px-4 py-2 text-sm font-medium flex items-center gap-2 hover:bg-white/70 dark:hover:bg-slate-800/70 elevate">
-              <span id="selected-model-name">Girare AI 1</span>
-              <span class="material-symbols-outlined text-base">expand_more</span>
-            </button>
-            <!-- Menu -->
-            <div class="absolute right-0 mt-2 w-56 surface rounded-xl p-1 shadow-xl hidden group-focus-within:block" id="model-menu">
-              <a href="#" data-model="MicWin 1" class="block px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">Girare AI 1</a>
-              <a href="#" data-model="MicWin 1.5" class="block px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">Girare AI 1.5</a>
-              <a href="#" data-model="MicWin 2 Lite" class="block px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">Girare AI 2 Lite</a>
-            </div>
-          </div>
-
-          <!-- Right: quick actions -->
-          <div class="flex items-center gap-2">
-            <label for="file-upload" class="cursor-pointer">
-              <div class="w-10 h-10 surface rounded-xl grid place-items-center toolbar-btn elevate" title="Import JSON knowledge">
-                <span class="material-symbols-outlined">attach_file</span>
-              </div>
-              <input id="file-upload" type="file" class="hidden" accept=".json" />
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="hairline w-full"></div>
-    </header>
-
-    <!-- Content -->
-    <main class="flex-1 overflow-y-auto px-3 sm:px-5 pb-5">
-      <div class="max-w-6xl mx-auto">
-
-        <!-- MicWin 2‑Lite gradient WELCOME container (hidden by default; shown when 2‑Lite is active) -->
-        <section id="twolite-hero" class="hidden twolite-gradient text-white rounded-2xl p-6 sm:p-8 mb-4 elevate">
-          <div class="flex items-start gap-4">
-            <img src="./Logo/Logo.png" class="w-12 h-12 rounded-lg" alt="MicWin logo"/>
-            <div>
-              <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Welcome to Girare AI 2‑Lite</h2>
-              <p class="mt-1 text-white/90 max-w-3xl">Expanded knowledge in astrophysics, health (general info), social media, and games. Multiple thinking strategies, professional responses, and built‑in video link testing. Type to focus — the background turns white while you write.</p>
-              <ul class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-                <li class="flex items-center gap-2"><span class="material-symbols-outlined text-base">auto_awesome</span><span>Strategies: fast, deliberate, planner‑coder, compare, socratic, critic</span></li>
-                <li class="flex items-center gap-2"><span class="material-symbols-outlined text-base">code</span><span>Generate multi‑layer code (HTML, CSS/Tailwind, JS, Node)</span></li>
-                <li class="flex items-center gap-2"><span class="material-symbols-outlined text-base">psychology</span><span>Show complex thinking with a structured trace</span></li>
-                <li class="flex items-center gap-2"><span class="material-symbols-outlined text-base">smart_display</span><span>Video link testing: quick heuristics & snippets</span></li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <!-- Chat surface -->
-        <div class="surface elevate rounded-2xl p-3 sm:p-5">
-          <div id="chat-container" class="relative px-1 sm:px-2 space-y-4">
-            <!-- Welcome (kept for script.js) -->
-            <div id="welcome-screen" class="relative flex flex-col items-center justify-center h-[60vh] text-center">
-              <img src="./Logo/Logo.png" alt="MicWin logo" class="w-[120px] h-auto mb-6 rounded-xl"/>
-              <h1 id="welcome-title" class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2">How can I help you today?</h1>
-              <p id="welcome-subtitle" class="text-slate-600 dark:text-slate-400 mb-8">Ask me anything, or try a quick suggestion.</p>
-
-              <!-- Suggestions: MicWin 1 (basic) -->
-              <div id="suggestions-micwin1" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full max-w-3xl">
-                <button class="quick-reply-btn surface rounded-xl p-4 text-left hover:bg-white/70 dark:hover:bg-slate-800/70 elevate">
-                  <h3 class="font-semibold">Compare Flu and COVID</h3>
-                  <p class="text-sm text-slate-600 dark:text-slate-400">Main differences in symptoms and prevention.</p>
-                </button>
-                <button class="quick-reply-btn surface rounded-xl p-4 text-left hover:bg-white/70 dark:hover:bg-slate-800/70 elevate">
-                  <h3 class="font-semibold">Explain the Common Cold</h3>
-                  <p class="text-sm text-slate-600 dark:text-slate-400">Usual symptoms and general care tips.</p>
-                </button>
-                <button class="quick-reply-btn surface rounded-xl p-4 text-left hover:bg-white/70 dark:hover:bg-slate-800/70 elevate">
-                  <h3 class="font-semibold">List respiratory illnesses</h3>
-                  <p class="text-sm text-slate-600 dark:text-slate-400">Get a quick list of examples.</p>
-                </button>
-              </div>
-
-              <!-- Suggestions: MicWin 1.5 (advanced) -->
-              <div id="suggestions-micwin15" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full max-w-3xl">
-                <button class="quick-reply-btn surface rounded-xl p-4 text-left hover:bg-white/70 dark:hover:bg-slate-800/70 elevate">
-                  <h3 class="font-semibold">Build a Landing Page (Tailwind)</h3>
-                  <p class="text-sm text-slate-600 dark:text-slate-400">Hero, CTA, responsive layout.</p>
-                </button>
-                <button class="quick-reply-btn surface rounded-xl p-4 text-left hover:bg-white/70 dark:hover:bg-slate-800/70 elevate">
-                  <h3 class="font-semibold">Make a Todo App (HTML/CSS/JS)</h3>
-                  <p class="text-sm text-slate-600 dark:text-slate-400">Local storage, add/toggle/delete.</p>
-                </button>
-                <button class="quick-reply-btn surface rounded-xl p-4 text-left hover:bg-white/70 dark:hover:bg-slate-800/70 elevate">
-                  <h3 class="font-semibold">Compare multiple diseases</h3>
-                  <p class="text-sm text-slate-600 dark:text-slate-400">Generate a comparison table.</p>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Composer -->
-        <div class="mt-4">
-          <div class="surface elevate rounded-2xl p-2 sm:p-3">
-            <div class="flex items-center gap-2 sm:gap-3">
-              <div class="hidden sm:block">
-                <label for="file-upload" class="cursor-pointer">
-                  <div class="w-10 h-10 surface rounded-xl grid place-items-center toolbar-btn" title="Attach JSON">
-                    <span class="material-symbols-outlined">attach_file</span>
-                  </div>
-                </label>
-              </div>
-              <input id="user-input" type="text" placeholder='Type your message… e.g., "Explain common cold and lung cancer"' class="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus-ring text-[15px]" />
-              <button id="send-btn" class="w-11 h-11 rounded-xl bg-blue-600 hover:bg-blue-700 text-white grid place-items-center toolbar-btn">
-                <span class="material-symbols-outlined">send</span>
-              </button>
-              <button id="regen-btn" class="w-11 h-11 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white grid place-items-center toolbar-btn">
-                <span class="material-symbols-outlined">autorenew</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </main>
+    <footer>
+      © <span id="year"></span> GiroWare LLC. All rights reserved. “Girare AI” and product names are trademarks of GiroWare LLC.
+    </footer>
   </div>
 
-  <!-- Hidden inputs (for script hooks) -->
-  <input id="file-upload" type="file" class="hidden" accept=".json" />
+<script>
+  const $ = (s, c=document) => c.querySelector(s);
+  const $$ = (s, c=document) => Array.from(c.querySelectorAll(s));
 
-  <!-- App script (ESM) -->
-  <script type="module" src="./script.js"></script>
+  // Year
+  $('#year').textContent = new Date().getFullYear();
 
-  <script>
-    // Simple click outside to open/close model menu
-    (function() {
-      const trigger = document.getElementById('selected-model-name')?.closest('button');
-      const menu = document.getElementById('model-menu');
-      if (!trigger || !menu) return;
-      let open = false;
-      const show = () => { menu.classList.remove('hidden'); open = true; };
-      const hide = () => { menu.classList.add('hidden'); open = false; };
-      trigger.addEventListener('click', (e) => { e.preventDefault(); open ? hide() : show(); });
-      document.addEventListener('click', (e) => { if (open && !menu.contains(e.target) && !trigger.contains(e.target)) hide(); });
-    })();
-  </script>
+  // Countdowns
+  function startCountdown(root){
+    const target = new Date(root.getAttribute('data-deadline'));
+    const daysEl = root.querySelector('[data-days]');
+    const hoursEl = root.querySelector('[data-hours]');
+    const minsEl = root.querySelector('[data-mins]');
+    const secsEl = root.querySelector('[data-secs]');
+    const pad = n => String(n).padStart(2,'0');
+
+    function tick(){
+      const now = new Date();
+      let diff = target - now;
+      if (diff <= 0){ daysEl.textContent=hoursEl.textContent=minsEl.textContent=secsEl.textContent='00'; return; }
+      const sec = Math.floor(diff/1000)%60;
+      const min = Math.floor(diff/60000)%60;
+      const hr  = Math.floor(diff/3600000)%24;
+      const day = Math.floor(diff/86400000);
+      daysEl.textContent=pad(day); hoursEl.textContent=pad(hr); minsEl.textContent=pad(min); secsEl.textContent=pad(sec);
+    }
+
+    tick(); return setInterval(tick, 1000);
+  }
+  $$('[data-deadline]').map(startCountdown);
+
+  // Smooth keyboard nav
+  $$('.pill').forEach(el=>{
+    el.addEventListener('keydown', e=>{
+      if(e.key==='Enter' && el.getAttribute('href')?.startsWith('#')){
+        e.preventDefault();
+        const id = el.getAttribute('href').slice(1);
+        document.getElementById(id)?.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    });
+  });
+
+  // Safety net: rename any legacy "MicWin" mentions to "Girare AI"
+  function sanitizeLegacyNames(){
+    document.querySelectorAll('*').forEach(node=>{
+      node.childNodes && node.childNodes.forEach(n=>{
+        if(n.nodeType===Node.TEXT_NODE && /MicWin/gi.test(n.nodeValue)){
+          n.nodeValue = n.nodeValue.replace(/MicWin/gi, 'Girare AI');
+        }
+      });
+    });
+  }
+  sanitizeLegacyNames();
+</script>
 </body>
 </html>
