@@ -22,7 +22,7 @@
       radial-gradient(1000px 700px at 110% 10%, #121c2a 0%, transparent 60%),
       linear-gradient(180deg, #0a0c12 0%, #0b0c0f 60%, #0b0c0f 100%);
     background-attachment:fixed;font-size:16px;line-height:1.5;scroll-behavior:smooth;
-  }
+    }
   a{color:inherit;text-decoration:none}
   .container{max-width:1200px;margin:0 auto;padding:24px 20px 64px}
 
@@ -45,6 +45,7 @@
     border-radius:20px;padding:22px;box-shadow:0 15px 60px rgba(0,0,0,.35)}
   .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);
     border:1px solid rgba(255,255,255,.10);color:var(--muted);font-size:12px;letter-spacing:.3px}
+  .badge.live{color:#d6ffe5;background:rgba(48,209,88,.18);border-color:rgba(48,209,88,.35)}
   .grid{display:grid;gap:18px}
 
   /* Cards */
@@ -59,6 +60,9 @@
   .ok{color:#c6ffd3;border-color:rgba(48,209,88,.35);background:rgba(48,209,88,.08)}
   .beta{color:#d7caff;border-color:rgba(123,92,255,.45);background:rgba(123,92,255,.10)}
   .tight{margin-top:6px}
+  .actions{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap}
+  .btn{padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);cursor:pointer}
+  .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:0}
 
   /* Countdown */
   .countdown{display:flex;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap}
@@ -195,8 +199,8 @@
         </article>
 
         <!-- Girare AI 2-lite -->
-        <article class="card">
-          <div class="badge">Upcoming</div>
+        <article id="ai-2lite" class="card">
+          <div class="badge" data-2lite-badge>Upcoming</div>
           <h3>Girare AI 2-lite</h3>
           <p>
             A nimble tester with specialty domains: <strong>video testing</strong>, <strong>astrophysics</strong>, <strong>health questions</strong>, and <strong>social meta</strong>.
@@ -208,17 +212,25 @@
             <li>Social/meta conversations for content planning</li>
           </ul>
           <div class="meta">
-            <span class="chip">Specialist tester</span>
+            <span class="chip" data-2lite-chip>Specialist tester</span>
             <span class="chip ok">Faster iteration</span>
             <span class="chip">Normal countdown</span>
           </div>
-          <div class="countdown" data-deadline="2025-08-28T20:00:00">
+
+          <!-- Normal Countdown -->
+          <div class="countdown" data-deadline="2025-08-28T20:00:00" data-2lite-timer>
             <div class="cd-box"><div class="num" data-days>--</div><div class="lbl">DAYS</div></div>
             <div class="cd-box"><div class="num" data-hours>--</div><div class="lbl">HOURS</div></div>
             <div class="cd-box"><div class="num" data-mins>--</div><div class="lbl">MIN</div></div>
             <div class="cd-box"><div class="num" data-secs>--</div><div class="lbl">SEC</div></div>
           </div>
-          <p class="sub" style="margin-top:8px;font-size:12px">Plans date: <strong>Aug 28, 2025 — 8:00 PM</strong></p>
+          <p class="sub" style="margin-top:8px;font-size:12px" data-2lite-note>Plans date: <strong>Aug 28, 2025 — 8:00 PM</strong></p>
+
+          <!-- Actions (hidden until release) -->
+          <div class="actions" data-2lite-actions style="display:none">
+            <button class="btn primary" onclick="alert('Launching Girare AI 2-lite…')">Try 2-lite</button>
+            <button class="btn" onclick="alert('Release notes coming soon!')">View release notes</button>
+          </div>
         </article>
 
         <!-- Girare AI 2 -->
@@ -339,8 +351,8 @@
   // Year
   $('#year').textContent = new Date().getFullYear();
 
-  // Countdowns
-  function startCountdown(root){
+  // Countdown with onComplete callback
+  function startCountdown(root, onComplete){
     const target = new Date(root.getAttribute('data-deadline'));
     const daysEl = root.querySelector('[data-days]');
     const hoursEl = root.querySelector('[data-hours]');
@@ -351,17 +363,74 @@
     function tick(){
       const now = new Date();
       let diff = target - now;
-      if (diff <= 0){ daysEl.textContent=hoursEl.textContent=minsEl.textContent=secsEl.textContent='00'; return; }
+
+      if (diff <= 0){
+        // lock to zero and fire completion exactly once
+        daysEl.textContent = hoursEl.textContent = minsEl.textContent = secsEl.textContent = '00';
+        if (!root.dataset.completed){
+          root.dataset.completed = 'true';
+          typeof onComplete === 'function' && onComplete();
+        }
+        return;
+      }
       const sec = Math.floor(diff/1000)%60;
       const min = Math.floor(diff/60000)%60;
       const hr  = Math.floor(diff/3600000)%24;
       const day = Math.floor(diff/86400000);
-      daysEl.textContent=pad(day); hoursEl.textContent=pad(hr); minsEl.textContent=pad(min); secsEl.textContent=pad(sec);
+      daysEl.textContent = pad(day);
+      hoursEl.textContent = pad(hr);
+      minsEl.textContent = pad(min);
+      secsEl.textContent = pad(sec);
     }
 
-    tick(); return setInterval(tick, 1000);
+    tick();
+    return setInterval(tick, 1000);
   }
-  $$('[data-deadline]').map(startCountdown);
+
+  // 2-lite: change UI when countdown hits zero
+  function mark2LiteReleased(){
+    const card   = $('#ai-2lite');
+    const badge  = card.querySelector('[data-2lite-badge]');
+    const chip   = card.querySelector('[data-2lite-chip]');
+    const timer  = card.querySelector('[data-2lite-timer]');
+    const note   = card.querySelector('[data-2lite-note]');
+    const actions= card.querySelector('[data-2lite-actions]');
+
+    // Swap badge to "Now available"
+    badge.textContent = 'Now available';
+    badge.classList.add('live');
+
+    // Update the first chip to "Live"
+    chip.textContent = 'Live';
+
+    // Remove timer + note; reveal actions
+    timer?.remove();
+    note?.remove();
+    actions.style.display = 'flex';
+
+    // Optional subtle highlight flash
+    card.animate(
+      [
+        { boxShadow: '0 0 0 rgba(48,209,88,0)' },
+        { boxShadow: '0 0 0 16px rgba(48,209,88,0.15)' },
+        { boxShadow: '0 0 0 rgba(48,209,88,0)' }
+      ],
+      { duration: 1200, easing: 'ease', iterations: 1 }
+    );
+  }
+
+  // Initialize all countdowns, wiring 2-lite to flip when done
+  $$('[data-deadline]').forEach(el=>{
+    if (el.hasAttribute('data-2lite-timer')) {
+      startCountdown(el, mark2LiteReleased);
+      // If the page loads after the deadline, flip immediately
+      if (new Date(el.getAttribute('data-deadline')) - new Date() <= 0){
+        mark2LiteReleased();
+      }
+    } else {
+      startCountdown(el);
+    }
+  });
 
   // Smooth keyboard nav
   $$('.pill').forEach(el=>{
