@@ -4,73 +4,89 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>GiroWare LLC — Introducing Girare AI</title>
-<meta name="description" content="GiroWare LLC — Introducing Girare AI: modern AI lineup with clear product tiers, countdowns, and clean design." />
+<meta name="description" content="GiroWare LLC — Introducing Girare AI: modern AI lineup with clean design, clear capabilities, and transparent release plans." />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0b0c0f;--card:#101218;--text:#e9eef6;--muted:#a6b0c3;
+    --bg:#0b0c0f;--card:#101218;--card-2:#0e1116;--text:#e9eef6;--muted:#a6b0c3;
     --accent:#55a6ff;--accent-2:#7b5cff;--glass:rgba(255,255,255,.06);--ring:rgba(85,166,255,.35);
-    --ok:#30d158;--warn:#ffb020;
+    --ok:#30d158;--warn:#ffb020;--err:#ff453a;
+    --peace-1:#a1ffd6;--peace-2:#b8e7ff;--peace-3:#ffe6a8;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
-    margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);
+    margin:0;
+    font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--text);
     background:
       radial-gradient(1200px 800px at 10% -10%, #1a1f2e 0%, transparent 60%),
       radial-gradient(1000px 700px at 110% 10%, #121c2a 0%, transparent 60%),
       linear-gradient(180deg, #0a0c12 0%, #0b0c0f 60%, #0b0c0f 100%);
-    background-attachment:fixed;font-size:16px;line-height:1.5;scroll-behavior:smooth;
+    background-attachment:fixed;
     }
   a{color:inherit;text-decoration:none}
   .container{max-width:1200px;margin:0 auto;padding:24px 20px 64px}
 
-  /* Nav */
-  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;position:sticky;top:0;backdrop-filter:saturate(140%) blur(10px);
-    background:linear-gradient(180deg, rgba(10,12,18,.85), rgba(10,12,18,.35));border-bottom:1px solid rgba(255,255,255,.06);z-index:5}
+  /* NAV */
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;
+    position:sticky;top:0;backdrop-filter:saturate(140%) blur(10px);
+    background:linear-gradient(180deg, rgba(10,12,18,.85), rgba(10,12,18,.35));
+    border-bottom:1px solid rgba(255,255,255,.06);z-index:5
+  }
   .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px}
-  .logo{width:28px;height:28px;border-radius:9px;background:conic-gradient(from 210deg,#66d1ff,#b896ff,#ffe58d,#66d1ff);box-shadow:0 0 0 2px rgba(255,255,255,.06),0 8px 24px rgba(123,92,255,.35)}
-  .navlinks{display:flex;gap:18px}
+  .logo{
+    width:28px;height:28px;border-radius:9px;
+    background:conic-gradient(from 210deg,#66d1ff,#b896ff,#ffe58d,#66d1ff);
+    box-shadow:0 0 0 2px rgba(255,255,255,.06),0 8px 24px rgba(123,92,255,.35)
+  }
+  .navlinks{display:flex;gap:18px;flex-wrap:wrap}
   .pill{padding:8px 14px;border-radius:999px;background:var(--glass);border:1px solid rgba(255,255,255,.06);transition:all .2s}
   .pill:hover{border-color:var(--ring);box-shadow:0 0 0 6px rgba(85,166,255,.07)}
   .cta{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:0}
 
-  /* Hero */
+  /* HERO */
   .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;margin:56px 0 28px}
-  .hero h1{font-size:clamp(32px,5vw,64px);line-height:1.05;margin:0 0 14px;letter-spacing:-.02em;background:linear-gradient(180deg,#fff,#dfe7ff 60%,#b8c7ff);
-    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero h1{
+    font-size:clamp(32px,5vw,64px);line-height:1.05;margin:0 0 14px;letter-spacing:-.02em;
+    background:linear-gradient(180deg,#fff,#dfe7ff 60%,#b8c7ff);
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
   .lede{color:var(--muted);font-size:clamp(16px,2.2vw,20px);max-width:52ch}
-  .hero-card{border:1px solid rgba(255,255,255,.06);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
-    border-radius:20px;padding:22px;box-shadow:0 15px 60px rgba(0,0,0,.35)}
+  .hero-card{
+    border:1px solid rgba(255,255,255,.06);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
+    border-radius:20px;padding:22px;box-shadow:0 15px 60px rgba(0,0,0,.35)
+  }
   .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);
     border:1px solid rgba(255,255,255,.10);color:var(--muted);font-size:12px;letter-spacing:.3px}
   .badge.live{color:#d6ffe5;background:rgba(48,209,88,.18);border-color:rgba(48,209,88,.35)}
-  .grid{display:grid;gap:18px}
 
-  /* Cards */
+  /* CARDS */
   .cards{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin-top:22px}
   .card{grid-column:span 6;background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:20px;transition:.2s}
   .card:hover{transform:translateY(-4px);border-color:var(--ring);box-shadow:0 12px 30px rgba(85,166,255,.12)}
   .card h3{margin:6px 0 8px;font-size:22px}
   .card p{margin:0;color:var(--muted);line-height:1.6}
   .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-  .chip{font-size:12px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:#d8e4ff;letter-spacing:.2px}
-  .warn{color:#ffd9a0;border-color:rgba(255,183,0,.35);background:rgba(255,183,0,.08)}
+  .chip{font-size:12px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:#d8e4ff}
   .ok{color:#c6ffd3;border-color:rgba(48,209,88,.35);background:rgba(48,209,88,.08)}
+  .warn{color:#ffd9a0;border-color:rgba(255,183,0,.35);background:rgba(255,183,0,.08)}
   .beta{color:#d7caff;border-color:rgba(123,92,255,.45);background:rgba(123,92,255,.10)}
   .tight{margin-top:6px}
   .actions{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap}
   .btn{padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);cursor:pointer}
   .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:0}
 
-  /* Countdown */
+  /* COUNTDOWN */
   .countdown{display:flex;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap}
+  .cd-lede{font-size:12px;color:var(--muted);margin-right:6px;letter-spacing:.2px}
   .cd-box{min-width:78px;text-align:center;padding:10px 8px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08)}
   .cd-box .num{font-size:22px;font-weight:700;line-height:1}
   .cd-box .lbl{font-size:10px;color:var(--muted);letter-spacing:.3px;margin-top:6px}
 
-  /* Peace countdown theme */
+  /* PEACE THEME */
   .peace{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.10);
     background:radial-gradient(600px 300px at -10% -20%, rgba(255,255,255,.2), transparent 60%),
                linear-gradient(135deg, rgba(161,255,214,.18), rgba(184,231,255,.18), rgba(255,230,168,.18))}
@@ -79,12 +95,12 @@
   .peace-title{display:flex;align-items:center;gap:10px;margin:10px 0 2px;font-weight:700;letter-spacing:.2px}
   .olive{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #eafff5, #9de6bf 60%, #5cbf8a);box-shadow:0 0 0 2px rgba(255,255,255,.18)}
 
-  /* Sections */
+  /* SECTIONS */
   .section{margin:48px 0 18px}
   .section h2{font-size:clamp(22px,3.2vw,34px);margin:0 0 10px;letter-spacing:-.01em}
   .sub{color:var(--muted);max-width:70ch}
 
-  /* Pricing */
+  /* PRICING */
   .pricing{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin-top:18px}
   .plan{grid-column:span 12;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:22px}
   .price-tag{display:flex;align-items:baseline;gap:10px}
@@ -93,10 +109,10 @@
   .tick{display:flex;gap:10px;align-items:flex-start;margin-top:10px}
   .tick i{font-style:normal;width:22px;height:22px;display:inline-grid;place-items:center;border-radius:999px;background:rgba(48,209,88,.15);border:1px solid rgba(48,209,88,.35)}
 
-  /* Footer */
+  /* FOOTER */
   footer{margin-top:56px;padding:28px 0;color:var(--muted);font-size:12px;border-top:1px solid rgba(255,255,255,.08)}
 
-  /* Responsive */
+  /* RESPONSIVE */
   @media (max-width: 960px){
     .hero{grid-template-columns:1fr;gap:18px}
     .card{grid-column:span 12}
@@ -129,6 +145,7 @@
           Explore the Girare AI lineup below, from the experimental <strong>Girare AI&nbsp;1</strong>
           to the upcoming <strong>Girare AI&nbsp;2</strong> peace-day release.
         </p>
+
         <div class="grid" style="margin-top:18px">
           <div class="badge"><span aria-hidden="true">●</span> Minimal, product-first design</div>
           <div class="badge"><span aria-hidden="true">●</span> Web • Desktop • “one use for PS6”</div>
@@ -164,7 +181,7 @@
           <h3>Girare AI 1</h3>
           <p>
             A first-generation model that can surface <strong>general medical information</strong> and a few niche utilities—including
-            <em>one use for PS6</em> integrations. <strong>Not recommended for medical decisions</strong>.
+            <em>one use for PS6</em> integrations. <strong>Not recommended for medical decisions</strong>: content may be incomplete or inaccurate.
           </p>
           <ul class="tight" style="margin-top:10px;color:var(--muted);line-height:1.7">
             <li>Reads common symptoms and conditions at an overview level</li>
@@ -217,16 +234,19 @@
             <span class="chip">Normal countdown</span>
           </div>
 
-          <!-- Normal Countdown -->
-          <div class="countdown" data-deadline="2025-08-28T20:00:00" data-2lite-timer>
+          <!-- Countdown to Aug 29, 2025 ~7:00 PM (local time in user's browser) -->
+          <div class="countdown" data-deadline="2025-08-29T19:00:00" data-2lite-timer>
+            <span class="cd-lede" aria-hidden="true">Releases in</span>
             <div class="cd-box"><div class="num" data-days>--</div><div class="lbl">DAYS</div></div>
             <div class="cd-box"><div class="num" data-hours>--</div><div class="lbl">HOURS</div></div>
             <div class="cd-box"><div class="num" data-mins>--</div><div class="lbl">MIN</div></div>
             <div class="cd-box"><div class="num" data-secs>--</div><div class="lbl">SEC</div></div>
           </div>
-          <p class="sub" style="margin-top:8px;font-size:12px" data-2lite-note>Plans date: <strong>Aug 28, 2025 — 8:00 PM</strong></p>
+          <p class="sub" style="margin-top:8px;font-size:12px" data-2lite-note>
+            Plans date: <strong>Aug 29, 2025 — ~7:00 PM</strong>
+          </p>
 
-          <!-- Actions (hidden until release) -->
+          <!-- Actions (hidden until release flips to "Now available") -->
           <div class="actions" data-2lite-actions style="display:none">
             <button class="btn primary" onclick="alert('Launching Girare AI 2-lite…')">Try 2-lite</button>
             <button class="btn" onclick="alert('Release notes coming soon!')">View release notes</button>
@@ -253,12 +273,15 @@
             <span class="chip">Video link previews</span>
           </div>
           <div class="countdown" data-deadline="2025-09-21T00:00:00">
+            <span class="cd-lede" aria-hidden="true">Peace release in</span>
             <div class="cd-box"><div class="num" data-days>--</div><div class="lbl">DAYS</div></div>
             <div class="cd-box"><div class="num" data-hours>--</div><div class="lbl">HOURS</div></div>
             <div class="cd-box"><div class="num" data-mins>--</div><div class="lbl">MIN</div></div>
             <div class="cd-box"><div class="num" data-secs>--</div><div class="lbl">SEC</div></div>
           </div>
-          <p class="sub" style="margin-top:8px;font-size:12px">Release target: <strong>September 21, 2025</strong> — The International Day of Peace</p>
+          <p class="sub" style="margin-top:8px;font-size:12px">
+            Release target: <strong>September 21, 2025</strong> — The International Day of Peace
+          </p>
         </article>
       </div>
     </section>
@@ -276,7 +299,7 @@
             <div class="price-note">Free for all users</div>
           </div>
           <div class="tick"><i>✓</i><div>Use <strong>Girare AI 1</strong> and <strong>1.5</strong> at no cost</div></div>
-          <div class="tick"><i>✓</i><div><strong>Girare AI 2-lite</strong> free testing starting <strong>Aug 28, 2025, 8:00 PM</strong></div></div>
+          <div class="tick"><i>✓</i><div><strong>Girare AI 2-lite</strong> free testing starting <strong>Aug 29, 2025 ~7:00 PM</strong></div></div>
           <div class="tick"><i>✓</i><div><strong>Girare AI 2</strong> planned release on <strong>Sep 21, 2025</strong> — no pricing announced</div></div>
           <div class="tick"><i>✓</i><div>Fair-use limits may apply to prevent abuse</div></div>
           <div class="tick"><i>✓</i><div>Medical information is <strong>informational only</strong> — not a substitute for professional advice</div></div>
@@ -330,7 +353,7 @@
     <section id="get-started" class="section">
       <h2>Get Started</h2>
       <p class="sub">Try Girare AI&nbsp;1.x free today—and watch the countdowns for 2-lite and the peace-day release of 2.</p>
-      <div class="grid" style="grid-template-columns:1fr auto;align-items:center;gap:16px">
+      <div class="grid" style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px">
         <div>
           <div class="badge">Contact</div>
           <p style="margin:8px 0 0;color:var(--muted)">Questions, pilots, or research collabs.</p>
@@ -345,94 +368,14 @@
   </div>
 
 <script>
+  // ---------- Helpers ----------
   const $ = (s, c=document) => c.querySelector(s);
   const $$ = (s, c=document) => Array.from(c.querySelectorAll(s));
 
-  // Year
+  // Live year
   $('#year').textContent = new Date().getFullYear();
 
-  // Countdown with onComplete callback
-  function startCountdown(root, onComplete){
-    const target = new Date(root.getAttribute('data-deadline'));
-    const daysEl = root.querySelector('[data-days]');
-    const hoursEl = root.querySelector('[data-hours]');
-    const minsEl = root.querySelector('[data-mins]');
-    const secsEl = root.querySelector('[data-secs]');
-    const pad = n => String(n).padStart(2,'0');
-
-    function tick(){
-      const now = new Date();
-      let diff = target - now;
-
-      if (diff <= 0){
-        // lock to zero and fire completion exactly once
-        daysEl.textContent = hoursEl.textContent = minsEl.textContent = secsEl.textContent = '00';
-        if (!root.dataset.completed){
-          root.dataset.completed = 'true';
-          typeof onComplete === 'function' && onComplete();
-        }
-        return;
-      }
-      const sec = Math.floor(diff/1000)%60;
-      const min = Math.floor(diff/60000)%60;
-      const hr  = Math.floor(diff/3600000)%24;
-      const day = Math.floor(diff/86400000);
-      daysEl.textContent = pad(day);
-      hoursEl.textContent = pad(hr);
-      minsEl.textContent = pad(min);
-      secsEl.textContent = pad(sec);
-    }
-
-    tick();
-    return setInterval(tick, 1000);
-  }
-
-  // 2-lite: change UI when countdown hits zero
-  function mark2LiteReleased(){
-    const card   = $('#ai-2lite');
-    const badge  = card.querySelector('[data-2lite-badge]');
-    const chip   = card.querySelector('[data-2lite-chip]');
-    const timer  = card.querySelector('[data-2lite-timer]');
-    const note   = card.querySelector('[data-2lite-note]');
-    const actions= card.querySelector('[data-2lite-actions]');
-
-    // Swap badge to "Now available"
-    badge.textContent = 'Now available';
-    badge.classList.add('live');
-
-    // Update the first chip to "Live"
-    chip.textContent = 'Live';
-
-    // Remove timer + note; reveal actions
-    timer?.remove();
-    note?.remove();
-    actions.style.display = 'flex';
-
-    // Optional subtle highlight flash
-    card.animate(
-      [
-        { boxShadow: '0 0 0 rgba(48,209,88,0)' },
-        { boxShadow: '0 0 0 16px rgba(48,209,88,0.15)' },
-        { boxShadow: '0 0 0 rgba(48,209,88,0)' }
-      ],
-      { duration: 1200, easing: 'ease', iterations: 1 }
-    );
-  }
-
-  // Initialize all countdowns, wiring 2-lite to flip when done
-  $$('[data-deadline]').forEach(el=>{
-    if (el.hasAttribute('data-2lite-timer')) {
-      startCountdown(el, mark2LiteReleased);
-      // If the page loads after the deadline, flip immediately
-      if (new Date(el.getAttribute('data-deadline')) - new Date() <= 0){
-        mark2LiteReleased();
-      }
-    } else {
-      startCountdown(el);
-    }
-  });
-
-  // Smooth keyboard nav
+  // Smooth keyboard nav for pills
   $$('.pill').forEach(el=>{
     el.addEventListener('keydown', e=>{
       if(e.key==='Enter' && el.getAttribute('href')?.startsWith('#')){
@@ -454,6 +397,91 @@
     });
   }
   sanitizeLegacyNames();
+
+  // ---------- Countdown Engine ----------
+  function startCountdown(root, onComplete){
+    const target = new Date(root.getAttribute('data-deadline'));
+    const daysEl = root.querySelector('[data-days]');
+    const hoursEl = root.querySelector('[data-hours]');
+    const minsEl = root.querySelector('[data-mins]');
+    const secsEl = root.querySelector('[data-secs]');
+    const pad = n => String(n).padStart(2,'0');
+
+    function tick(){
+      const now = new Date();
+      let diff = target - now;
+
+      // When time is up, clamp to 00:00:00 and fire completion once
+      if (diff <= 0){
+        daysEl.textContent = '00';
+        hoursEl.textContent = '00';
+        minsEl.textContent = '00';
+        secsEl.textContent = '00';
+        if (!root.dataset.completed){
+          root.dataset.completed = 'true';
+          if (typeof onComplete === 'function') onComplete();
+        }
+        return;
+      }
+
+      const sec = Math.floor(diff/1000)%60;
+      const min = Math.floor(diff/60000)%60;
+      const hr  = Math.floor(diff/3600000)%24;
+      const day = Math.floor(diff/86400000);
+
+      daysEl.textContent  = pad(day);
+      hoursEl.textContent = pad(hr);
+      minsEl.textContent  = pad(min);
+      secsEl.textContent  = pad(sec);
+    }
+
+    tick();
+    return setInterval(tick, 1000);
+  }
+
+  // ---------- 2-lite Flip Logic ----------
+  function mark2LiteReleased(){
+    const card   = $('#ai-2lite');
+    if (!card) return;
+
+    const badge  = card.querySelector('[data-2lite-badge]');
+    const chip   = card.querySelector('[data-2lite-chip]');
+    const timer  = card.querySelector('[data-2lite-timer]');
+    const note   = card.querySelector('[data-2lite-note]');
+    const actions= card.querySelector('[data-2lite-actions]');
+
+    // Swap badge to "Now available"
+    if (badge){ badge.textContent = 'Now available'; badge.classList.add('live'); }
+
+    // Update the first chip to "Live"
+    if (chip){ chip.textContent = 'Live'; }
+
+    // Remove timer + note; reveal actions
+    timer?.remove();
+    note?.remove();
+    if (actions){ actions.style.display = 'flex'; }
+
+    // Optional subtle highlight pulse
+    card.animate(
+      [
+        { boxShadow: '0 0 0 rgba(48,209,88,0)' },
+        { boxShadow: '0 0 0 16px rgba(48,209,88,0.15)' },
+        { boxShadow: '0 0 0 rgba(48,209,88,0)' }
+      ],
+      { duration: 1200, easing: 'ease', iterations: 1 }
+    );
+  }
+
+  // Initialize all countdowns; hook 2-lite to flip at zero
+  $$('[data-deadline]').forEach(el=>{
+    const is2Lite = el.hasAttribute('data-2lite-timer');
+    startCountdown(el, is2Lite ? mark2LiteReleased : undefined);
+
+    // If loaded after deadline, flip immediately
+    if (is2Lite && (new Date(el.getAttribute('data-deadline')) - new Date() <= 0)){
+      mark2LiteReleased();
+    }
+  });
 </script>
 </body>
 </html>
