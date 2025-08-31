@@ -1,8 +1,8 @@
-// micwin-1.5.js — MicWin 1.5 (context-safe, no reliance on `this`)
+// girare-1.5.js — Girare AI 1.5 (context-safe, no reliance on `this`)
 
 // Exported model
-export const girare15  = {
-   name: "Girare AI 1.5",
+export const girare15 = {
+  name: "Girare AI 1.5",
 
   starters: [
     "👩‍💻 Need help coding in HTML, CSS, Tailwind, JavaScript, or Node.js? Try: make a todo app with HTML/CSS/JS.",
@@ -41,7 +41,7 @@ export const girare15  = {
     hpv:{label:"HPV",overview:"Human papillomavirus; common; many types.",symptoms:"Often none; some cause warts or contribute to cancers.",prevention:"HPV vaccination and screening programs.",management:"Depends on manifestation; clinician-guided."},
     eczema:{label:"Eczema (Atopic Dermatitis)",overview:"Chronic inflammatory skin condition.",symptoms:"Dry, itchy, inflamed patches; flares/remissions.",prevention:"Trigger avoidance; moisturizers.",management:"Topicals; clinician guidance."},
 
-    ai:{label:"MicWin 1.5",overview:"Learns, reasons, explains/compares topics, and generates multi-layer code.",learning:"Teach via: `teach: topic: details` or upload JSON.",coding:"Generates HTML, CSS, Tailwind, JavaScript, Node.js; can plan & lint."}
+    ai:{label:"Girare AI 1.5",overview:"Learns, reasons, explains/compares topics, and generates multi-layer code.",learning:"Teach via: `teach: topic: details` or upload JSON.",coding:"Generates HTML, CSS, Tailwind, JavaScript, Node.js; can plan & lint."}
   },
 
   _unknownStreak: 0,
@@ -50,7 +50,7 @@ export const girare15  = {
   // ---------- Skills (context-safe: never rely on `this`) ----------
   skills: {
     learn(topic, content) {
-      const self = micwin15;
+      const self = girare15;
       const key = (topic || "misc").trim().replace(/\s+/g, "_").toLowerCase();
       if (!self.knowledge[key]) self.knowledge[key] = { label: prettyName(key) };
       self.knowledge[key].userNotes = content;
@@ -58,7 +58,7 @@ export const girare15  = {
     },
 
     forget(topic) {
-      const self = micwin15;
+      const self = girare15;
       const key = (topic || "").trim().replace(/\s+/g, "_").toLowerCase();
       if (!key || !self.knowledge[key]) return `I don’t have "${topic}" stored.`;
       delete self.knowledge[key];
@@ -66,7 +66,7 @@ export const girare15  = {
     },
 
     learnFromJSON(obj) {
-      const self = micwin15;
+      const self = girare15;
       if (!obj || typeof obj !== "object") return "Invalid JSON.";
       if (obj.knowledge) Object.assign(self.knowledge, obj.knowledge);
       return "Imported JSON knowledge.";
@@ -80,7 +80,7 @@ export const girare15  = {
     },
 
     searchKnowledge(query) {
-      const self = micwin15;
+      const self = girare15;
       const lower = (query || "").toLowerCase();
       const keys = Object.keys(TOPIC_ALIASES);
       const hits = new Set();
@@ -94,7 +94,7 @@ export const girare15  = {
     },
 
     listTopics({ category } = {}) {
-      const self = micwin15;
+      const self = girare15;
       const all = Object.keys(self.knowledge);
       const skipTech = new Set(["html","css","tailwind","javascript","nodejs","accessibility","performance","security","seo","ai"]);
       const isHealth = k => !skipTech.has(k);
@@ -105,7 +105,7 @@ export const girare15  = {
     },
 
     compareTopics(keys) {
-      const self = micwin15;
+      const self = girare15;
       const chosen = keys && keys.length ? keys : getDefaultHealthKeys(self.knowledge);
       const text = buildComparison(self.knowledge, chosen);
       const table = comparisonTableHTML(self.knowledge, chosen);
@@ -113,7 +113,7 @@ export const girare15  = {
     },
 
     makeTable(keys) {
-      const self = micwin15;
+      const self = girare15;
       return comparisonTableHTML(self.knowledge, keys && keys.length ? keys : getDefaultHealthKeys(self.knowledge));
     },
 
@@ -161,7 +161,7 @@ console.log('All tests executed.');`;
 
     // --------- Core reasoning (context-safe) ---------
     think(input) {
-      const self = micwin15;
+      const self = girare15;
       const text = String(input || "");
       const lower = text.toLowerCase().trim();
       const steps = [];
@@ -255,7 +255,7 @@ ${table}
       const lang = (language || "").toLowerCase();
       if (!["html","css","tailwind","javascript","node.js","node"].includes(lang)) {
         return { professionalResponse: "I support HTML, CSS, Tailwind, JavaScript, and Node.js." };
-        }
+      }
       const fence = (lang === 'node' || lang === 'node.js') ? 'javascript' : lang;
       const snippet = generateCodeSample(lang, description);
       return { professionalResponse: `Here is a ${language} example${description ? " for: " + description : ""}\n\n\`\`\`${fence}\n${snippet}\n\`\`\``, thinkingProcess: `Planned ${language} snippet.` };
@@ -263,6 +263,7 @@ ${table}
 
     // Multi-layer generator (layers guard + defaults)
     generateMultiCode(rawText, layers, kind) {
+      const self = girare15;
       const L = Array.isArray(layers) ? layers : [];
       const wantsTW   = L.includes("tailwind");
       const wantsCSS  = L.includes("css");
@@ -287,9 +288,9 @@ ${table}
 
       const lintNotes = [];
       for (const [lang, code] of parts) {
-        if (lang === "html")       lintNotes.push(`HTML: ${micwin15.skills.lintHTML(code)}`);
-        if (lang === "css")        lintNotes.push(`CSS: ${micwin15.skills.lintCSS(code)}`);
-        if (lang === "javascript") lintNotes.push(`JS: ${micwin15.skills.lintJS(code)}`);
+        if (lang === "html")       lintNotes.push(`HTML: ${self.skills.lintHTML(code)}`);
+        if (lang === "css")        lintNotes.push(`CSS: ${self.skills.lintCSS(code)}`);
+        if (lang === "javascript") lintNotes.push(`JS: ${self.skills.lintJS(code)}`);
       }
 
       let out = `Here are ${useLayers.join(", ").toUpperCase()} snippets${chosenKind ? ` for a ${chosenKind} feature` : ""}:\n\n`;
@@ -326,7 +327,7 @@ const TOPIC_ALIASES = {
   html:["html"], css:["css"], tailwind:["tailwind","tailwindcss"],
   javascript:["javascript","js"], nodejs:["node","node.js","nodejs"],
   accessibility:["a11y","accessibility"], performance:["performance","perf"],
-  security:["security","csp","xss"], seo:["seo"], ai:["micwin 1.5","ai","model"]
+  security:["security","csp","xss"], seo:["seo"], ai:["girare ai 1.5","ai","model","girare 1.5"]
 };
 
 function parseIntent(lower) {
@@ -574,7 +575,7 @@ function generateHTML(kind, tailwind){
     case "modal":
       return `${tw}<div class="h-screen grid place-items-center">
   <button id="open" class="px-4 py-2 rounded bg-blue-600 text-white">Open Modal</button>
-  <div id="modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center">
+  <div id="modal" class="fixed inset-0 bg-black/50 hidden items-center justify-content-center">
     <div class="bg-white rounded-xl p-6 max-w-sm w-[90%]">
       <h2 class="text-xl font-semibold mb-2">Modal Title</h2>
       <p class="mb-4">Hello from a modal!</p>
