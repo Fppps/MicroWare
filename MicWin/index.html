@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Girare AI • Chat</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- PDF.js for Girare AI 2 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+
+  <!-- Material Symbols -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <!-- Highlight.js for code blocks -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+
+  <style>
+    :root {
+      --bg-primary: #f9fafb;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #f3f4f6;
+      --border-color: #e5e7eb;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --accent-primary: #2563eb;
+      --accent-primary-hover: #1d4ed8;
+      --accent-text: #ffffff;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .dark {
+      --bg-primary: #030712;
+      --bg-secondary: #111827;
+      --bg-tertiary: #1f2937;
+      --border-color: #374151;
+      --text-primary: #f9fafb;
+      --text-secondary: #9ca3af;
+      --accent-primary: #3b82f6;
+      --accent-primary-hover: #2563eb;
+      --accent-text: #ffffff;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+    
+    #sidebar { transition: transform 0.3s ease-in-out; }
+    #sidebar-backdrop { transition: opacity 0.3s ease-in-out; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .message-bubble { animation: fadeIn 0.3s ease-out forwards; }
+    
+    .definition-tooltip-wrapper {
+        position: relative;
+        cursor: help;
+        font-weight: 600;
+        color: var(--accent-primary);
+        border-bottom: 2px dotted rgba(59, 130, 246, 0.4);
+    }
+    .definition-tooltip {
+        visibility: hidden;
+        opacity: 0;
+        position: absolute;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: opacity 0.2s, visibility 0.2s;
+        width: 256px;
+        padding: 0.75rem;
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        font-size: 0.875rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        z-index: 10;
+    }
+    .definition-tooltip-wrapper:hover .definition-tooltip {
+        visibility: visible;
+        opacity: 1;
+    }
+    /* Google Translate Widget Styles */
+    #google_translate_element .goog-te-gadget-simple {
+        background-color: transparent !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 8px !important;
+        padding: 6px 8px !important;
+        font-size: 12px !important;
+        cursor: pointer;
+        width: 100%;
+    }
+    #google_translate_element .goog-te-gadget-simple span {
+        color: var(--text-secondary) !important;
+    }
+    .goog-te-menu-frame {
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+        border-radius: 8px !important;
+        border: 1px solid var(--border-color) !important;
+        background-color: var(--bg-secondary) !important;
+    }
+    .goog-te-menu2-item div, .goog-te-menu2-item:link div, .goog-te-menu2-item:visited div, .goog-te-menu2-item:active div {
+        color: var(--text-primary) !important;
+        background-color: var(--bg-secondary) !important;
+    }
+    .goog-te-menu2-item-selected div, .goog-te-menu2-item-selected:link div, .goog-te-menu2-item-selected:visited div, .goog-te-menu2-item-selected:active div {
+        background-color: var(--bg-tertiary) !important;
+    }
+    body > .skiptranslate { display: none !important; }
+    .goog-te-gadget-icon { display: none !important; }
+  </style>
+</head>
+<body class="min-h-screen flex text-sm">
+
+  <!-- Sidebar backdrop for mobile -->
+  <div id="sidebar-backdrop" class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none md:hidden z-30"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-72 bg-bg-secondary border-r border-border-color flex flex-col transform -translate-x-full md:translate-x-0">
+    <div class="p-4 border-b border-border-color flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="./Logo/Logo.png" alt="Girare AI Logo" class="w-9 h-9 rounded-lg">
+        <span class="font-bold text-base text-text-primary">Girare AI</span>
+      </div>
+    </div>
+    <div class="px-4 pt-4">
+      <button id="new-chat-btn" class="w-full mb-2 px-3 py-2 rounded-lg bg-accent-primary text-accent-text hover:bg-accent-primary-hover text-sm font-semibold flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-base">add</span>
+        New Chat
+      </button>
+    </div>
+    <div class="px-4 pt-3">
+      <h2 class="text-xs font-semibold uppercase tracking-wider text-text-secondary">History</h2>
+    </div>
+    <div id="history-container" class="flex-1 px-3 py-2 overflow-y-auto">
+      <!-- Session history will be rendered here -->
+    </div>
+    <div class="p-4 border-t border-border-color space-y-2">
+        <button id="clear-history-btn" class="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg text-text-secondary hover:bg-bg-tertiary">
+            <span class="material-symbols-outlined text-base">delete</span> Clear All History
+        </button>
+        <div id="settings-container" class="relative">
+            <button id="settings-btn" class="w-full flex items-center justify-between gap-2 px-3 py-2 text-sm rounded-lg text-text-secondary hover:bg-bg-tertiary">
+                 <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">settings</span> Settings
+                 </div>
+                 <span id="settings-chevron" class="material-symbols-outlined text-base transition-transform duration-200">expand_more</span>
+            </button>
+            <div id="settings-dropdown" class="pl-4 pt-2 space-y-2 hidden">
+                <div class="flex items-center gap-2 text-text-secondary">
+                    <span class="material-symbols-outlined text-base">translate</span>
+                    <span class="text-sm font-medium">Translate Page</span>
+                </div>
+                <div id="google_translate_element"></div>
+            </div>
+        </div>
+        <button id="dark-mode-toggle-btn" class="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg text-text-secondary hover:bg-bg-tertiary">
+            <span class="material-symbols-outlined text-base dark:hidden">dark_mode</span>
+            <span class="material-symbols-outlined text-base hidden dark:inline">light_mode</span>
+            <span class="dark:hidden">Dark Mode</span>
+            <span class="hidden dark:inline">Light Mode</span>
+        </button>
+        <div class="text-xs text-center text-text-secondary pt-2 px-2">
+            © 2025 GiroWare. All Rights Reserved.
+        </div>
+    </div>
+  </aside>
+
+  <!-- Main Chat -->
+  <div class="flex-1 flex flex-col min-w-0">
+    <!-- Header -->
+    <header class="sticky top-0 z-20 backdrop-blur-sm bg-bg-primary/80 border-b border-border-color">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 py-2 flex items-center justify-between">
+        <button id="menu-btn" class="md:hidden w-9 h-9 grid place-items-center rounded-lg hover:bg-bg-tertiary text-text-secondary">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <div class="relative group">
+          <button id="model-trigger" class="rounded-lg px-4 py-2 text-sm font-medium flex items-center gap-2 hover:bg-bg-tertiary">
+            <span id="selected-model-name" class="font-semibold text-text-primary">Girare AI 2 Lite</span>
+            <span class="material-symbols-outlined text-base text-text-secondary group-hover:text-text-primary">expand_more</span>
+          </button>
+          <div id="model-menu" class="absolute left-0 mt-2 w-56 bg-bg-secondary rounded-lg p-1 shadow-xl border border-border-color hidden">
+            <a href="#" data-model="Girare AI 1" class="block px-3 py-2 text-sm rounded-md hover:bg-bg-tertiary text-text-primary">Girare AI 1</a>
+            <a href="#" data-model="Girare AI 1.5" class="block px-3 py-2 text-sm rounded-md hover:bg-bg-tertiary text-text-primary">Girare AI 1.5</a>
+            <a href="#" data-model="Girare AI 2 Lite" class="block px-3 py-2 text-sm rounded-md hover:bg-bg-tertiary text-text-primary">Girare AI 2 Lite</a>
+            <a href="#" data-model="Girare AI 2" class="block px-3 py-2 text-sm rounded-md hover:bg-bg-tertiary text-text-primary">Girare AI 2</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Chat container -->
+    <main class="flex-1 overflow-y-auto">
+        <div id="chat-container" class="max-w-4xl mx-auto px-4 sm:px-6 pt-6 pb-24 space-y-6">
+            <div id="welcome-screen" class="text-center py-16">
+              <div class="w-16 h-16 mx-auto rounded-2xl mb-4">
+                  <img src="./Logo/Logo.png" alt="Girare AI Logo" class="w-full h-full object-cover rounded-2xl">
+              </div>
+              <h1 class="text-3xl font-bold text-text-primary mb-2">How can I help you today?</h1>
+              <p class="text-text-secondary">Ask me anything, or try switching models in the menu above.</p>
+            </div>
+            <!-- Messages will be appended here -->
+        </div>
+    </main>
+
+    <!-- Input Area -->
+    <footer class="fixed bottom-0 left-0 md:left-72 right-0 bg-gradient-to-t from-bg-primary to-transparent">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 pb-4 pt-8">
+            <div class="flex justify-center mb-2">
+                <button id="regen-btn" class="px-3 py-1.5 text-xs font-semibold flex items-center gap-2 rounded-lg border border-border-color bg-bg-secondary hover:bg-bg-tertiary text-text-secondary">
+                    <span class="material-symbols-outlined text-sm">refresh</span> Regenerate Response
+                </button>
+            </div>
+            <div class="relative">
+              <textarea id="user-input" rows="1" placeholder="Ask anything..." class="w-full resize-none bg-bg-secondary border border-border-color rounded-xl shadow-sm pl-4 pr-12 py-3 focus:outline-none focus:ring-2 focus:ring-accent-primary text-base"></textarea>
+              <button id="send-btn" class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-accent-primary hover:bg-accent-primary-hover text-white grid place-items-center disabled:bg-gray-300 dark:disabled:bg-gray-600">
+                <span class="material-symbols-outlined text-lg">send</span>
+              </button>
+            </div>
+        </div>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="./script.js"></script>
+  
+  <!-- Google Translate -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
+
